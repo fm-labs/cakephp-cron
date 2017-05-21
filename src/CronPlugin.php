@@ -30,7 +30,7 @@ class CronPlugin implements PluginInterface, EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Backend.Menu.get' => ['callable' => 'getBackendMenu', 'priority' => 5 ]
+            'Backend.Menu.get' => ['callable' => 'getBackendMenu', 'priority' => 90 ]
         ];
     }
 
