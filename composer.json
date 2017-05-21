@@ -1,0 +1,24 @@
+{
+    "name": "fm-labs/cakephp-cron",
+    "description": "Cron Job plugin for CakePHP",
+    "type": "cakephp-plugin",
+    "require": {
+        "php": ">=5.4.16",
+        "cakephp/cakephp": "~3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cake\\": "./vendor/cakephp/cakephp",
+            "Cron\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests",
+            "Cron\\Test\\": "tests"
+        }
+    }
+}
