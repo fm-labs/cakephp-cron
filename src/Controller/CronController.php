@@ -45,7 +45,7 @@ class CronController extends Controller
         }
 
         // load tasks into registry
-        $this->_taskRegistry = new CronTaskRegistry($this);
+        $this->_taskRegistry = new CronTaskRegistry();
         foreach ($this->tasks as $taskName => $config) {
             // normalize config
             $config += ['className' => null, 'interval' => null];
