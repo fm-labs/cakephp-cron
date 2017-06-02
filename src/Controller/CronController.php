@@ -11,6 +11,7 @@ use Cake\Event\Event;
 use Cron\Cron\CronTaskInterface;
 use Cron\Cron\CronTaskRegistry;
 use Cron\Cron\CronTaskResult;
+use Cron\Event\CronStatsListener;
 use Cron\Event\CronTaskEvent;
 use Cron\Event\CronTaskListener;
 
@@ -62,6 +63,7 @@ class CronController extends Controller
 
         // attach cron task listener
         $this->eventManager()->on(new CronTaskListener());
+        $this->eventManager()->on(new CronStatsListener());
     }
 
     public function beforeFilter(Event $event)
@@ -71,10 +73,13 @@ class CronController extends Controller
 
     public function index()
     {
+
+        $force = (bool) $this->request->query('force');
+
         $results = [];
         foreach (array_keys($this->tasks) as $taskName) {
 
-            $results[] = $this->_executeTask($taskName, $this->_taskRegistry->get($taskName));
+            $results[] = $this->_executeTask($taskName, $this->_taskRegistry->get($taskName), !$force);
         }
 
         $this->set(compact('results'));
@@ -116,10 +121,11 @@ class CronController extends Controller
         $result = null;
         try {
 
-            $check = $this->_checkTask($taskName);
-            if ($check instanceof CronTaskResult) {
-                $result = $check;
-                return $result;
+            if ($check == true) {
+                $checkResult = $this->_checkTask($taskName);
+                if ($checkResult instanceof CronTaskResult) {
+                    return $checkResult;
+                }
             }
 
             // dispatch beforeTask event
@@ -163,7 +169,8 @@ class CronController extends Controller
 
         } catch (MissingActionException $ex) {
 
-            $action = $this->request->params['action'];
+            $action = (string) $this->request->param('action');
+            $force = (bool) $this->request->query('force');
 
             if (!$this->_taskRegistry->has($action)) {
                 throw new MissingActionException([
@@ -175,7 +182,7 @@ class CronController extends Controller
             }
 
             $task = $this->_taskRegistry->get($action);
-            $result = $this->_executeTask($action, $task);
+            $result = $this->_executeTask($action, $task, !$force);
 
             $this->set('results', [$result]);
             $this->set('_serialize', 'results');
