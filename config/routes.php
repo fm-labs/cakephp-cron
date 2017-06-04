@@ -5,11 +5,4 @@ use Cake\Routing\Router;
 Router::plugin('Cron', ['path' => '/cron'], function(RouteBuilder $routes) {
     $routes->connect('/', ['controller' => 'Cron']);
     $routes->connect('/:action', ['controller' => 'Cron']);
-
-
-    $routes->prefix('admin', function ($routes) {
-
-        $routes->connect('/:controller');
-        $routes->fallbacks('DashedRoute');
-    });
 });

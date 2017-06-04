@@ -6,6 +6,7 @@ use Banana\Plugin\PluginInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
+use Cake\Routing\Router;
 
 /**
  * Class CronPlugin
@@ -34,8 +35,17 @@ class CronPlugin implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Backend.Menu.get' => ['callable' => 'getBackendMenu', 'priority' => 90 ]
+            'Backend.Menu.get' => ['callable' => 'getBackendMenu', 'priority' => 90 ],
+            'Backend.Routes.build' => 'buildBackendRoutes'
         ];
+    }
+
+    public function buildBackendRoutes()
+    {
+        Router::scope('/cron/admin', ['plugin' => 'Cron', '_namePrefix' => 'cron:admin:', 'prefix' => 'admin'], function($routes) {
+            $routes->connect('/:controller');
+            $routes->fallbacks('DashedRoute');
+        });
     }
 
     /**
