@@ -2,9 +2,13 @@
 
 namespace Cron\View;
 
-
 use Cake\View\View;
 
+/**
+ * Class CronView
+ *
+ * @package Cron\View
+ */
 class CronView extends View
 {
     public function render($view = null, $layout = null)

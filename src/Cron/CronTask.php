@@ -7,6 +7,7 @@ use Cron\Cron\CronTaskInterface;
 
 /**
  * Class CronTask
+ *
  * @package Cron\Cron
  */
 abstract class CronTask implements CronTaskInterface

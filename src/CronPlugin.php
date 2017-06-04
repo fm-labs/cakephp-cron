@@ -2,13 +2,17 @@
 
 namespace Cron;
 
-
 use Banana\Plugin\PluginInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 
-class CronPlugin implements PluginInterface, EventListenerInterface
+/**
+ * Class CronPlugin
+ *
+ * @package Cron
+ */
+class CronPlugin implements EventListenerInterface
 {
 
     /**
@@ -34,6 +38,9 @@ class CronPlugin implements PluginInterface, EventListenerInterface
         ];
     }
 
+    /**
+     * @param Event $event
+     */
     public function getBackendMenu(Event $event)
     {
         $event->subject()->addItem([
@@ -53,13 +60,5 @@ class CronPlugin implements PluginInterface, EventListenerInterface
                 ]
             ],
         ]);
-    }
-
-    /**
-     * @param array $config
-     * @return void
-     */
-    public function __invoke(array $config = [])
-    {
     }
 }

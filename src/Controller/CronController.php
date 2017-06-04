@@ -2,7 +2,6 @@
 
 namespace Cron\Controller;
 
-
 use Cake\Cache\Cache;
 use Cake\Controller\Controller;
 use Cake\Controller\Exception\MissingActionException;

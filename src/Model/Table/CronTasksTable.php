@@ -2,15 +2,24 @@
 
 namespace Cron\Model\Table;
 
-
 use Banana\Model\ArrayTable;
 use Cake\Core\Configure;
 
+/**
+ * Class CronTasksTable
+ *
+ * @package Cron\Model\Table
+ */
 class CronTasksTable extends ArrayTable
 {
-
+    /**
+     * @var array
+     */
     protected $_items = [];
 
+    /**
+     * Custom initialize method
+     */
     public function initialize()
     {
         $this->displayField('className');
