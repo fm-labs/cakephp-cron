@@ -2,12 +2,18 @@
 
 namespace Cron\Cron\Task;
 
-
 use Cake\Log\Log;
 use Cron\Cron\CronTaskInterface;
 
+/**
+ * Class DebugCronTask
+ * @package Cron\Cron\Task
+ */
 class DebugCronTask extends CronTask
 {
+    /**
+     * @return array
+     */
     public function execute()
     {
         $time = new \DateTime();

@@ -41,6 +41,16 @@ class CronPlugin implements PluginInterface, EventListenerInterface
             'url' => ['plugin' => 'Cron', 'controller' => 'Cron', 'action' => 'index'],
             'data-icon' => 'clock-o',
             'children' => [
+                'cron_tasks' => [
+                    'title' => 'Cron Tasks',
+                    'url' => ['plugin' => 'Cron', 'controller' => 'Cron', 'action' => 'index'],
+                    'data-icon' => 'clock-o',
+                ],
+                'cron_stats' => [
+                    'title' => 'Cron Stats',
+                    'url' => ['plugin' => 'Cron', 'controller' => 'CronStats', 'action' => 'index'],
+                    'data-icon' => 'clock-o',
+                ]
             ],
         ]);
     }
