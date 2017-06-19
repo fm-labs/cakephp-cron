@@ -44,11 +44,11 @@ class CronStatsController extends AdminAppController
 
     public function index()
     {
-        $this->Backend->executeAction();
+        $this->Action->execute();
     }
 
     public function view()
     {
-        $this->Backend->executeAction();
+        $this->Action->execute();
     }
 }

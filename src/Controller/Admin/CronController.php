@@ -40,7 +40,7 @@ class CronController extends AdminAppController
      */
     public function index()
     {
-        return $this->Backend->executeAction();
+        return $this->Action->execute();
     }
 
     /**
@@ -48,6 +48,6 @@ class CronController extends AdminAppController
      */
     public function view()
     {
-        return $this->Backend->executeAction();
+        return $this->Action->execute();
     }
 }
