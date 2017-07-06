@@ -17,14 +17,6 @@ class CronPlugin implements EventListenerInterface
 {
 
     /**
-     * @param EventManager $eventManager
-     * @return $this
-     */
-    public function registerEvents(EventManager $eventManager)
-    {
-    }
-
-    /**
      * Returns a list of events this object is implementing. When the class is registered
      * in an event manager, each individual method will be associated with the respective event.
      *
@@ -57,18 +49,15 @@ class CronPlugin implements EventListenerInterface
             'title' => 'Cron',
             'url' => ['plugin' => 'Cron', 'controller' => 'Cron', 'action' => 'index'],
             'data-icon' => 'clock-o',
+            /*
             'children' => [
                 'cron_tasks' => [
                     'title' => 'Cron Tasks',
                     'url' => ['plugin' => 'Cron', 'controller' => 'Cron', 'action' => 'index'],
                     'data-icon' => 'clock-o',
-                ],
-                'cron_stats' => [
-                    'title' => 'Cron Stats',
-                    'url' => ['plugin' => 'Cron', 'controller' => 'CronStats', 'action' => 'index'],
-                    'data-icon' => 'clock-o',
                 ]
             ],
+            */
         ]);
     }
 }
