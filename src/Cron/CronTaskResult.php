@@ -9,9 +9,6 @@ namespace Cron\Cron;
  */
 class CronTaskResult
 {
-    const STATUS_NORUN = 0;
-    const STATUS_FAIL = 1;
-    const STATUS_OK = 2;
 
     /**
      * @var array
@@ -19,27 +16,31 @@ class CronTaskResult
     protected $_data = [];
 
     /**
+     * @var array List of log messages
+     */
+    protected $_log = [];
+
+    /**
      * Constructor
      *
      * Example:
-     * new CronTaskResult('task_name', 0, 'Custom message', 123456789)
+     * new CronTaskResult( 0, 'Custom message', 123456789)
      *
-     * new CronTaskResult('task_name', [0, 'Custom message', 123456789])
+     * new CronTaskResult( [0, 'Custom message', 123456789])
      *
-     * new CronTaskResult('task_name', true)
+     * new CronTaskResult( true)
      *
-     * new CronTaskResult('task_name', [true])
+     * new CronTaskResult( [true])
      *
-     * new CronTaskResult('task_name', [false, 'Custom error message'])
+     * new CronTaskResult( [false, 'Custom error message'])
      *
      *
      *
-     * @param $taskName
      * @param bool|int $status Boolean TRUE maps to STATUS_OK, FALSE to STATUS_FAIL
      * @param string $message Custom result message string
      * @param null $timestamp
      */
-    public function __construct($taskName, $status, $message = "", $timestamp = null)
+    public function __construct($status, $message = "", $timestamp = null, $log = [])
     {
         if (is_array($status)) {
             if (count($status) == 1) {
@@ -51,30 +52,18 @@ class CronTaskResult
             }
         }
 
-        if (is_bool($status)) {
-            $status = ($status === true) ? static::STATUS_OK : static::STATUS_FAIL;
-        }
-
-        if ($timestamp instanceof \DateTime) {
-            $timestamp = $timestamp->getTimestamp();
-        } elseif (!$timestamp) {
+        if (!$timestamp) {
             $timestamp = time();
+        } elseif ($timestamp instanceof \DateTime) {
+            $timestamp = $timestamp->getTimestamp();
         }
 
         $this->_data = [
-            'taskName'  => (string) $taskName,
             'status'    => (int) $status,
             'message'   => (string) $message,
             'timestamp' => (int) $timestamp
         ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getTaskName()
-    {
-        return $this->_data['taskName'];
+        $this->_log = $log;
     }
 
     /**
@@ -101,6 +90,11 @@ class CronTaskResult
         return $this->_data['timestamp'];
     }
 
+    public function getLog()
+    {
+        return $this->_log;
+    }
+
     /**
      * @return array
      */
@@ -117,8 +111,7 @@ class CronTaskResult
      */
     public function __toString()
     {
-        return sprintf("%s %d %d %s",
-            $this->_data['taskName'],
+        return sprintf("%d %d %s",
             $this->_data['timestamp'],
             $this->_data['status'],
             $this->_data['message']

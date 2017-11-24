@@ -71,12 +71,12 @@ class CronTaskRegistry extends ObjectRegistry
             $instance = new $class($settings);
         }
 
-        if ($instance instanceof CronTaskInterface) {
+        if ($instance instanceof CronTask) {
             return $instance;
         }
 
         throw new RuntimeException(
-            'CronTask must implement CronTaskInterface.'
+            'Object must extend CronTask class.'
         );
     }
 
@@ -84,7 +84,7 @@ class CronTaskRegistry extends ObjectRegistry
      * Get loaded cron task instance
      *
      * @param string $name
-     * @return null|CronTaskInterface
+     * @return null|CronTask
      */
     public function get($name)
     {

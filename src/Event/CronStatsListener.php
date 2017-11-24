@@ -16,15 +16,14 @@ use Cron\Cron\CronTaskResult;
  */
 class CronStatsListener implements EventListenerInterface
 {
-
     /**
      * @return array List of implemented events
      */
     public function implementedEvents()
     {
         return [
-            'Cron.Controller.beforeTask' => 'beforeTask',
-            'Cron.Controller.afterTask' => 'afterTask',
+            'Cron.beforeTask' => 'beforeTask',
+            'Cron.afterTask' => 'afterTask',
         ];
     }
 
@@ -53,7 +52,7 @@ class CronStatsListener implements EventListenerInterface
         $statsDir = TMP . "cron" . DS;
         $folder = new Folder($statsDir, true, 0777);
 
-        $statsFile = $statsDir . $result->getTaskName() . "_" . date("Y-m-d") . ".csv";
+        $statsFile = $statsDir . $event->data['name'] . "_" . date("Y-m-d") . ".csv";
         $file = new File($statsFile, true);
         $file->append($statStr);
         $file->close();

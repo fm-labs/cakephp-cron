@@ -5,7 +5,7 @@ namespace Cron\Event;
 
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
-use Cron\Cron\CronTaskResult;
+use Cake\ORM\TableRegistry;
 
 /**
  * Class CronTaskListener
@@ -31,8 +31,8 @@ class CronTaskListener implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Cron.Controller.beforeTask' => 'beforeTask',
-            'Cron.Controller.afterTask' => 'afterTask',
+            'Cron.beforeTask' => 'beforeTask',
+            'Cron.afterTask' => 'afterTask',
         ];
     }
 
@@ -43,7 +43,7 @@ class CronTaskListener implements EventListenerInterface
      */
     public function beforeTask(CronTaskEvent $event)
     {
-        Log::write(static::$logLevel, sprintf("CronTask:%s EXECUTE", $event->getTaskName()), static::$logContext);
+        //Log::write(static::$logLevel, sprintf("CronTask:%s EXECUTE", $event->getTaskName()), static::$logContext);
     }
 
     /**
@@ -54,11 +54,38 @@ class CronTaskListener implements EventListenerInterface
     public function afterTask(CronTaskEvent $event)
     {
         $result = $event->getResult();
-        if ($result->getStatus() === CronTaskResult::STATUS_FAIL) {
-            Log::error(sprintf("CronTask:%s FAILED %s", $event->getTaskName(), $result->getMessage()));
-            return;
+
+        try {
+            $Jobs = TableRegistry::get('Cron.CronJobs');
+            $job = $Jobs->find()->where(['name' => $event->getTaskName()])->firstOrFail();
+            $job->last_status = $result->getStatus();
+            $job->last_message = $result->getMessage();
+            $job->last_executed = $result->getTimestamp();
+            if (!$Jobs->save($job)) {
+                throw new \RuntimeException("Failed to update CronJob");
+            }
+
+            $JobResults = TableRegistry::get('Cron.CronJobresults');
+            $jobResult = $JobResults->newEntity([
+                'cron_job_id' => $job->id,
+                'status' => $result->getStatus(),
+                'message' => $result->getMessage(),
+                'timestamp' => $result->getTimestamp(),
+                'log' => join("\n", $result->getLog())
+            ]);
+            if (!$JobResults->save($jobResult)) {
+                throw new \RuntimeException("Failed to add CronJobresult");
+            }
+
+        } catch (\Exception $ex) {
+            Log::error(sprintf("CronTask:%s SAVING RESULT FAILED: %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
         }
 
-        Log::write(static::$logLevel, sprintf("CronTask:%s SUCCESS %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
+        if ($result->getStatus() == false) {
+            Log::error(sprintf("CronTask:%s FAILED %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
+        } else {
+            Log::write(static::$logLevel, sprintf("CronTask:%s SUCCESS %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
+        }
+
     }
 }

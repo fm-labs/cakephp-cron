@@ -46,14 +46,14 @@ class CronPlugin implements EventListenerInterface
     public function getBackendMenu(Event $event)
     {
         $event->subject()->addItem([
-            'title' => 'Cron',
-            'url' => ['plugin' => 'Cron', 'controller' => 'Cron', 'action' => 'index'],
+            'title' => 'Cron Jobs',
+            'url' => ['plugin' => 'Cron', 'controller' => 'CronJobs', 'action' => 'index'],
             'data-icon' => 'clock-o',
             /*
             'children' => [
                 'cron_tasks' => [
-                    'title' => 'Cron Tasks',
-                    'url' => ['plugin' => 'Cron', 'controller' => 'Cron', 'action' => 'index'],
+                    'title' => 'Cron Jobs',
+                    'url' => ['plugin' => 'Cron', 'controller' => 'CronJobs', 'action' => 'index'],
                     'data-icon' => 'clock-o',
                 ]
             ],

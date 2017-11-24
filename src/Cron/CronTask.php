@@ -6,12 +6,19 @@ use Cake\Log\Log;
 use Cron\Cron\CronTaskInterface;
 
 /**
- * Class CronTask
+ * Class Task
  *
  * @package Cron\Cron
  */
-abstract class CronTask implements CronTaskInterface
+abstract class CronTask
 {
+    protected $_log = [];
+
+    /**
+     * @return array|TaskResult
+     */
+    abstract function execute();
+
     /**
      * Convenience log method
      *
@@ -22,9 +29,8 @@ abstract class CronTask implements CronTaskInterface
     {
         $className = get_class($this);
         $taskName = substr($className, strrpos($className, '\\') + 1);
-        $message = sprintf("[%s] %s", $taskName, $message);
-        $context = ['cron'];
+        $this->_log[] = $message = sprintf("[%s] %s", $taskName, $message);
 
-        Log::write($level, $message, $context);
+        Log::write($level, $message);
     }
 }
