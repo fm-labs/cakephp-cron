@@ -56,6 +56,8 @@ class CronManager implements EventDispatcherInterface
         if (!$this->_registry->has($taskName)) {
             $this->_registry->load($taskName, $config);
         }
+
+        $this->_tasks[$taskName] = $config;
         return $this;
     }
 
@@ -113,7 +115,9 @@ class CronManager implements EventDispatcherInterface
     }
 
     /**
+     * @param $taskName
      * @param CronTask $task
+     * @param bool $force
      * @return CronTaskResult
      */
     protected function _execute($taskName, CronTask $task, $force = false)
@@ -128,7 +132,7 @@ class CronManager implements EventDispatcherInterface
                     $status = null;
                     $nextRun = (new \DateTime())->setTimestamp($lastExecuted + $config['interval']);
                     //$nextRunStr = $nextRun->format("Y-m-d H:i:s");
-                    $msg = sprintf("Next run in %d seconds", $nextRun->getTimestamp() - time());
+                    $msg = sprintf("%ds", $nextRun->getTimestamp() - time());
                     return new CronTaskResult(-1, $msg);
                 }
             }

@@ -105,7 +105,7 @@ class CronTaskResult
 
     /**
      * Returns formatted string
-     * Format: [TASKNAME] [TIMESTAMP] [STATUS] [MESSAGE]
+     * Format: [TIMESTAMP] [STATUS] [MESSAGE]
      *
      * @return string
      */

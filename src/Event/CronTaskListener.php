@@ -78,13 +78,13 @@ class CronTaskListener implements EventListenerInterface
             }
 
         } catch (\Exception $ex) {
-            Log::error(sprintf("CronTask:%s SAVING RESULT FAILED: %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
+            Log::error(sprintf("[cron:task:%s] CronTaskListener: FAILED TO SAVE RESULTS: %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
         }
 
         if ($result->getStatus() == false) {
-            Log::error(sprintf("CronTask:%s FAILED %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
+            Log::error(sprintf("[cron:task:%s] CronTaskListener: FAILED %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
         } else {
-            Log::write(static::$logLevel, sprintf("CronTask:%s SUCCESS %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
+            Log::write(static::$logLevel, sprintf("[cron:task:%s] CronTaskListener: SUCCESS %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
         }
 
     }
