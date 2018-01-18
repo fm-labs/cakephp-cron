@@ -28,7 +28,7 @@ class CronPlugin implements EventListenerInterface
     public function implementedEvents()
     {
         return [
-            'Backend.Menu.get' => ['callable' => 'getBackendMenu', 'priority' => 90 ],
+            'Backend.Sidebar.get' => ['callable' => 'getBackendSidebarMenu', 'priority' => 90 ],
             'Backend.Routes.build' => 'buildBackendRoutes'
         ];
     }
@@ -44,21 +44,12 @@ class CronPlugin implements EventListenerInterface
     /**
      * @param Event $event
      */
-    public function getBackendMenu(Event $event)
+    public function getBackendSidebarMenu(Event $event)
     {
         $event->subject()->addItem([
             'title' => 'Cron Jobs',
             'url' => ['plugin' => 'Cron', 'controller' => 'CronJobs', 'action' => 'index'],
             'data-icon' => 'clock-o',
-            /*
-            'children' => [
-                'cron_tasks' => [
-                    'title' => 'Cron Jobs',
-                    'url' => ['plugin' => 'Cron', 'controller' => 'CronJobs', 'action' => 'index'],
-                    'data-icon' => 'clock-o',
-                ]
-            ],
-            */
         ]);
     }
 }
