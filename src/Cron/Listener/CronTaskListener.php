@@ -1,11 +1,13 @@
 <?php
 
-namespace Cron\Event;
+namespace Cron\Cron\Listener;
 
 
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
+use Cake\Mailer\Email;
 use Cake\ORM\TableRegistry;
+use Cron\Event\CronTaskEvent;
 
 /**
  * Class CronTaskListener
@@ -55,6 +57,7 @@ class CronTaskListener implements EventListenerInterface
     {
         $result = $event->getResult();
 
+        // database result logger
         try {
             $Jobs = TableRegistry::get('Cron.CronJobs');
             $job = $Jobs->find()->where(['name' => $event->getTaskName()])->firstOrFail();
@@ -78,13 +81,41 @@ class CronTaskListener implements EventListenerInterface
             }
 
         } catch (\Exception $ex) {
-            Log::error(sprintf("[cron:task:%s] CronTaskListener: FAILED TO SAVE RESULTS: %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
+            Log::error(sprintf("[cron:task:%s] CronTaskListener: FAILED TO SAVE RESULTS: %s",
+                $event->getTaskName(), $result->getMessage()), static::$logContext);
+        }
+
+        // send error notifications
+        $notifyOnError = $event->getCronManager()->config('notify_on_error');
+        $notifyEmail = $event->getCronManager()->config('notify_email');
+        if ($notifyOnError && $notifyEmail) {
+
+            // send report mail
+            if ($result->getStatus() == false) {
+                try {
+                    $email = new Email('admin');
+                    $email->subject('Cronjob result notification for '. $event->getTaskName());
+                    $email->template('Cron.cron_result_notify', false);
+                    $email->viewVars(array(
+                        'status' => $result->getStatus(),
+                        'timestamp' => $result->getTimestamp(),
+                        'message' => $result->getMessage(),
+                        'log' => $result->getLog()
+                    ));
+                    $email->send();
+                } catch (\Exception $e) {
+                    Log::error(sprintf("[cron:task:%s] CronTaskListener: FAILED TO SEND RESULT NOTIFY: %s",
+                        $event->getTaskName(), $result->getMessage()), static::$logContext);
+                }
+            }
         }
 
         if ($result->getStatus() == false) {
-            Log::error(sprintf("[cron:task:%s] CronTaskListener: FAILED %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
+            Log::error(sprintf("[cron:task:%s] CronTaskListener: FAILED %s",
+                $event->getTaskName(), $result->getMessage()), static::$logContext);
         } else {
-            Log::write(static::$logLevel, sprintf("[cron:task:%s] CronTaskListener: SUCCESS %s", $event->getTaskName(), $result->getMessage()), static::$logContext);
+            Log::write(static::$logLevel, sprintf("[cron:task:%s] CronTaskListener: SUCCESS %s",
+                $event->getTaskName(), $result->getMessage()), static::$logContext);
         }
 
     }

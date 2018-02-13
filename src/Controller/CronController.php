@@ -31,7 +31,7 @@ class CronController extends Controller
         // use CronView
         $this->viewBuilder()->className('Cron.Cron');
 
-        $this->cronManager = new CronManager($this->eventManager());
+        $this->cronManager = new CronManager($this->eventManager(), Configure::read('Cron.CronManager'));
     }
 
     public function beforeFilter(Event $event)
@@ -41,10 +41,11 @@ class CronController extends Controller
 
     public function index()
     {
+        $config = $this->cronManager->config();
         $force = (bool) $this->request->query('force');
         $results = $this->cronManager->executeAll($force);
 
-        $this->set(compact('results'));
+        $this->set(compact('config', 'results'));
         $this->set('_serialize', 'results');
     }
 

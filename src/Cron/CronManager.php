@@ -7,8 +7,8 @@ use Cake\Core\InstanceConfigTrait;
 use Cake\Event\EventDispatcherInterface;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Event\EventManager;
+use Cron\Cron\Listener\CronTaskListener;
 use Cron\Event\CronTaskEvent;
-use Cron\Event\CronTaskListener;
 
 class CronManager implements EventDispatcherInterface
 {
@@ -18,7 +18,10 @@ class CronManager implements EventDispatcherInterface
     /**
      * @var array Default config
      */
-    protected $_defaultConfig = [];
+    protected $_defaultConfig = [
+        'notify_email' => '',
+        'notify_on_error' => true,
+    ];
 
     /**
      * @var CronTaskRegistry

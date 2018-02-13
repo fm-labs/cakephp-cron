@@ -31,6 +31,6 @@ abstract class CronTask
         $taskName = substr($className, strrpos($className, '\\') + 1);
         $this->_log[] = $message = sprintf("[%s] %s", $taskName, $message);
 
-        Log::write($level, $message);
+        Log::write($level, $message, ['cron']);
     }
 }

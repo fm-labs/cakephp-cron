@@ -14,6 +14,14 @@ use Cron\Cron\CronTaskResult;
 class CronTaskEvent extends Event
 {
     /**
+     * return CronManager
+     */
+    public function getCronManager()
+    {
+        return $this->_subject;
+    }
+
+    /**
      * @return string
      */
     public function getTaskName()
