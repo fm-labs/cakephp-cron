@@ -6,9 +6,6 @@ use Backend\Controller\BackendActionsTrait;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Response;
-use Cake\ORM\Query;
-use Cake\ORM\TableRegistry;
-use Cake\Utility\Inflector;
 use Cron\Cron\CronManager;
 
 /**
@@ -16,7 +13,7 @@ use Cron\Cron\CronManager;
  *
  * @package Cron\Controller\Admin
  */
-class CronJobsController extends AdminController
+class CronJobsController extends CronController
 {
     use BackendActionsTrait;
 
@@ -42,6 +39,7 @@ class CronJobsController extends AdminController
         parent::beforeFilter($event);
 
         $this->Action->registerInline('run', ['scope' => ['table', 'form'], 'attrs' => [ 'data-icon' => 'car', 'target' => '_blank' ]]);
+        //$this->Action->registerExternal(['controller' => 'CronJobResults', 'action' => 'index']);
     }
 
     /**
@@ -77,17 +75,27 @@ class CronJobsController extends AdminController
 
     public function view($id = null)
     {
-        $cronJob = $this->CronJobs->find()->contain('CronJobresults', function(Query $q) {
+        $cronJob = $this->CronJobs->find()/*->contain('CronJobresults', function(Query $q) {
+            $q->limit(30);
             return $q->orderDesc('CronJobresults.id');
-        })->where(['CronJobs.id' => $id])->first();
+        })*/->where(['CronJobs.id' => $id])->first();
 
+        $this->set('entityOptions', ['contain' => []]);
         $this->set('entity', $cronJob);
+        /*
         $this->set('related', ['CronJobresults' => [
             'fieldsBlacklist' => ['cron_job_id', 'log', 'client_ip', 'timestamp'],
             'rowActions' => [
                 'view' => [__('View'), ['controller' => 'CronJobresults', 'action' => 'view', ':id']]
             ]
         ]]);
+        */
+        //$cronJobResults = $this->CronJobs->CronJobresults->find()->where(['cron_job_id' => $id])->limit(30)->all();
+        //$this->set('cronJobResults', $cronJobResults);
+        $this->set('tabs', [
+           'results' => ['title' => 'Results', 'url' => ['controller' => 'CronJobresults', 'action' => 'index', 'qry' => ['cron_job_id' => $id]]]
+        ]);
+
         $this->Action->execute();
     }
 

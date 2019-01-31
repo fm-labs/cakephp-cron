@@ -15,12 +15,8 @@ use Cake\Core\Configure;
  * @property ActionComponent $Action
  * @property BackendComponent $Backend
  */
-class AdminController extends Controller
+class CronController extends Controller
 {
-    use BackendActionsTrait;
-
-    public $actions = [];
-
     /**
      * Initialization hook method.
      *
@@ -32,6 +28,10 @@ class AdminController extends Controller
     public function initialize()
     {
         $this->loadComponent('Backend.Backend');
-        $this->loadComponent('Backend.Action');
+    }
+
+    public function index()
+    {
+        $this->redirect(['controller' => 'CronJobs', 'action' => 'index']);
     }
 }

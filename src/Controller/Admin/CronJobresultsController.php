@@ -15,7 +15,7 @@ use Cron\Cron\CronManager;
  *
  * @package Cron\Controller\Admin
  */
-class CronJobresultsController extends AdminController
+class CronJobresultsController extends CronController
 {
     use BackendActionsTrait;
 

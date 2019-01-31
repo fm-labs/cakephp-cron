@@ -2,11 +2,16 @@
 
 namespace Cron;
 
+use Backend\Backend;
+use Backend\BackendPluginInterface;
 use Backend\Event\RouteBuilderEvent;
+use Banana\Application;
 use Banana\Plugin\PluginInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
+use Cake\Http\MiddlewareQueue;
+use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
 /**
@@ -14,7 +19,7 @@ use Cake\Routing\Router;
  *
  * @package Cron
  */
-class CronPlugin implements EventListenerInterface
+class CronPlugin implements PluginInterface, BackendPluginInterface, EventListenerInterface
 {
 
     /**
@@ -29,11 +34,12 @@ class CronPlugin implements EventListenerInterface
     {
         return [
             'Backend.Sidebar.build' => ['callable' => 'buildBackendSidebarMenu', 'priority' => 90 ],
-            'Backend.SysMenu.build' => ['callable' => 'buildBackendSystemMenu', 'priority' => 90 ],
-            'Backend.Routes.build' => 'buildBackendRoutes'
+            //'Backend.SysMenu.build' => ['callable' => 'buildBackendSystemMenu', 'priority' => 90 ],
+            //'Backend.Routes.build' => 'buildBackendRoutes'
         ];
     }
 
+    /*
     public function buildBackendRoutes(RouteBuilderEvent $event)
     {
         $event->subject()->scope('/cron', ['plugin' => 'Cron', '_namePrefix' => 'cron:admin:', 'prefix' => 'admin'], function($routes) {
@@ -41,15 +47,12 @@ class CronPlugin implements EventListenerInterface
             $routes->fallbacks('DashedRoute');
         });
     }
+    */
 
     /**
      * @param Event $event
      */
     public function buildBackendSidebarMenu(Event $event)
-    {
-    }
-
-    public function buildBackendSystemMenu(Event $event)
     {
         if ($event->subject() instanceof \Banana\Menu\Menu) {
             $event->subject()->addItem([
@@ -58,5 +61,34 @@ class CronPlugin implements EventListenerInterface
                 'data-icon' => 'clock-o',
             ]);
         }
+    }
+
+    public function buildBackendSystemMenu(Event $event)
+    {
+    }
+
+    public function bootstrap(Application $app)
+    {
+        EventManager::instance()->on($this);
+    }
+
+    public function routes(RouteBuilder $routes)
+    {
+
+    }
+
+    public function middleware(MiddlewareQueue $middleware)
+    {
+
+    }
+
+    public function backendBootstrap(Backend $backend)
+    {
+
+    }
+
+    public function backendRoutes(RouteBuilder $routes)
+    {
+        $routes->fallbacks('DashedRoute');
     }
 }
