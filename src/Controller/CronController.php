@@ -42,7 +42,7 @@ class CronController extends Controller
     public function index()
     {
         $config = $this->cronManager->config();
-        $force = (bool) $this->request->query('force');
+        $force = (bool)$this->request->query('force');
         $results = $this->cronManager->executeAll($force);
 
         $this->set(compact('config', 'results'));
@@ -56,11 +56,9 @@ class CronController extends Controller
     {
         try {
             return parent::invokeAction();
-
         } catch (MissingActionException $ex) {
-
-            $action = (string) $this->request->param('action');
-            $force = (bool) $this->request->query('force');
+            $action = (string)$this->request->param('action');
+            $force = (bool)$this->request->query('force');
 
             if (!$this->cronManager->hasTask($action)) {
                 throw new MissingActionException([
@@ -83,14 +81,12 @@ class CronController extends Controller
         $cronJobs = [];
         try {
             $cronJobs = $this->CronJobs->find()->where(['is_active' => true])->all();
-
         } catch (\Exception $ex) {
             Log::error('[cron] LoadTasks: ' . $ex->getMessage(), ['cron']);
         }
 
         $tasks = [];
         foreach ($cronJobs as $cronJob) {
-
             $taskName = $cronJob->name;
             $config = [
                 'className' => $cronJob->class,
@@ -106,5 +102,4 @@ class CronController extends Controller
             }
         }
     }
-
 }

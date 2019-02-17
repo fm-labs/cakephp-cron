@@ -19,8 +19,8 @@ class CronView extends View
 
         // @TODO Hide results in production mode
         if (isset($this->viewVars['results'])) {
-            foreach ($this->viewVars['results'] as $taskName =>$result) {
-                $content .= sprintf("[%s] %s\n", $taskName, (string) $result );
+            foreach ($this->viewVars['results'] as $taskName => $result) {
+                $content .= sprintf("[%s] %s\n", $taskName, (string)$result);
             }
         }
 

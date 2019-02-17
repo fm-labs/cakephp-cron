@@ -15,8 +15,8 @@ class CronControllerTest extends IntegrationTestCase
     /**
      * Setup
      */
-   public function setUp()
-   {
+    public function setUp()
+    {
         parent::setUp();
         Configure::write('Cron.Tasks', [
             'test' => [
@@ -24,7 +24,7 @@ class CronControllerTest extends IntegrationTestCase
                'interval' => 0
             ]
         ]);
-   }
+    }
 
     /**
      * Test index method
@@ -32,6 +32,7 @@ class CronControllerTest extends IntegrationTestCase
     public function testIndex()
     {
         $this->markTestIncomplete();
+
         return;
 
         // No session data set.
@@ -41,5 +42,4 @@ class CronControllerTest extends IntegrationTestCase
         $this->assertHeaderContains('Content-Type', 'text/plain');
         $this->assertResponseContains("2 TEST OK");
     }
-
 }

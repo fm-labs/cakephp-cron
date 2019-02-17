@@ -61,6 +61,7 @@ class CronManager implements EventDispatcherInterface
         }
 
         $this->_tasks[$taskName] = $config;
+
         return $this;
     }
 
@@ -102,6 +103,7 @@ class CronManager implements EventDispatcherInterface
         foreach ($this->_registry->loaded() as $taskName) {
             $results[$taskName] = $this->_execute($taskName, $this->_registry->get($taskName), $force);
         }
+
         return $results;
     }
 
@@ -128,7 +130,6 @@ class CronManager implements EventDispatcherInterface
         $config = $this->_tasks[$taskName];
         $result = null;
         try {
-
             if (!$force) {
                 $lastExecuted = $config['timestamp'];
                 if ($lastExecuted && $lastExecuted + $config['interval'] > time()) {
@@ -136,6 +137,7 @@ class CronManager implements EventDispatcherInterface
                     $nextRun = (new \DateTime())->setTimestamp($lastExecuted + $config['interval']);
                     //$nextRunStr = $nextRun->format("Y-m-d H:i:s");
                     $msg = sprintf("%ds", $nextRun->getTimestamp() - time());
+
                     return new CronTaskResult(-1, $msg);
                 }
             }
@@ -146,18 +148,14 @@ class CronManager implements EventDispatcherInterface
             $event = $this->eventManager()->dispatch(new CronTaskEvent('Cron.beforeTask', $this, ['name' => $taskName, 'config' => $config, 'task' => $task]));
             if ($event->result instanceof CronTaskResult) {
                 $result = $event->result;
-
             } else {
-
                 $result = $task->execute();
                 if (!($result instanceof CronTaskResult)) {
                     throw new \Exception('CRON_BAD_TASK_RESULT');
                 }
             }
-
         } catch (\Exception $ex) {
             $result = new CronTaskResult(false, $ex->getMessage());
-
         }
 
         // dispatch afterTask event

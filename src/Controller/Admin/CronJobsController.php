@@ -50,6 +50,7 @@ class CronJobsController extends CronController
         if (!$this->cronManager) {
             $this->cronManager = new CronManager();
         }
+
         return $this->cronManager;
     }
 
@@ -105,6 +106,7 @@ class CronJobsController extends CronController
     public function run($id = null)
     {
         $job = $this->CronJobs->get($id, ['contain' => []]);
+
         return $this->redirect([
             'prefix' => false, 'plugin' => 'Cron', 'controller' => 'Cron', 'action' => $job->name
         ]);

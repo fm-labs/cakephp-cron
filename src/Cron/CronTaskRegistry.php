@@ -2,7 +2,6 @@
 
 namespace Cron\Cron;
 
-
 use Cake\Core\App;
 use Cake\Core\ObjectRegistry;
 use RuntimeException;
@@ -28,6 +27,7 @@ class CronTaskRegistry extends ObjectRegistry
         if (is_object($class)) {
             return $class;
         }
+
         return App::className($class, 'Cron/Task', 'CronTask');
     }
 

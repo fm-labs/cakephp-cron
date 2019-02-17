@@ -2,7 +2,6 @@
 
 namespace Cron\Event;
 
-
 use Cake\Event\Event;
 use Cron\Cron\CronTaskResult;
 
@@ -36,5 +35,4 @@ class CronTaskEvent extends Event
     {
         return $this->data['result'];
     }
-
 }

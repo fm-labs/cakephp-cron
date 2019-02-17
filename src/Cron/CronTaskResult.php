@@ -59,9 +59,9 @@ class CronTaskResult
         }
 
         $this->_data = [
-            'status'    => (int) $status,
-            'message'   => (string) $message,
-            'timestamp' => (int) $timestamp
+            'status'    => (int)$status,
+            'message'   => (string)$message,
+            'timestamp' => (int)$timestamp
         ];
         $this->_log = $log;
     }
@@ -111,7 +111,8 @@ class CronTaskResult
      */
     public function __toString()
     {
-        return sprintf("%d %d %s",
+        return sprintf(
+            "%d %d %s",
             $this->_data['timestamp'],
             $this->_data['status'],
             $this->_data['message']

@@ -74,17 +74,14 @@ class CronPlugin implements PluginInterface, BackendPluginInterface, EventListen
 
     public function routes(RouteBuilder $routes)
     {
-
     }
 
     public function middleware(MiddlewareQueue $middleware)
     {
-
     }
 
     public function backendBootstrap(Backend $backend)
     {
-
     }
 
     public function backendRoutes(RouteBuilder $routes)
