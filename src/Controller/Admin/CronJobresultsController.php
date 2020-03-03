@@ -2,13 +2,8 @@
 
 namespace Cron\Controller\Admin;
 
-use Backend\Controller\BackendActionsTrait;
 use Cake\Core\Configure;
 use Cake\Network\Response;
-use Cake\ORM\Query;
-use Cake\ORM\TableRegistry;
-use Cake\Utility\Inflector;
-use Cron\Cron\CronManager;
 
 /**
  * Class CronJobresultsController
@@ -17,8 +12,6 @@ use Cron\Cron\CronManager;
  */
 class CronJobresultsController extends CronController
 {
-    use BackendActionsTrait;
-
     /**
      * @var string
      */
@@ -30,7 +23,7 @@ class CronJobresultsController extends CronController
     ];
 
     /**
-     * @return Response|null
+     * @return void
      */
     public function index()
     {
@@ -50,6 +43,10 @@ class CronJobresultsController extends CronController
         $this->Action->execute();
     }
 
+    /**
+     * @param int $id Model ID
+     * @return void
+     */
     public function view($id = null)
     {
         $cronJob = $this->CronJobresults->find()->contain(['CronJobs'])->where(['CronJobresults.id' => $id])->first();

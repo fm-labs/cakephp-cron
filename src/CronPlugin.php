@@ -33,8 +33,8 @@ class CronPlugin implements PluginInterface, BackendPluginInterface, EventListen
     public function implementedEvents()
     {
         return [
-            'Backend.Sidebar.build' => ['callable' => 'buildBackendSidebarMenu', 'priority' => 90 ],
-            //'Backend.SysMenu.build' => ['callable' => 'buildBackendSystemMenu', 'priority' => 90 ],
+            'Backend.Menu.build.admin_primary' => ['callable' => 'buildBackendSidebarMenu', 'priority' => 90 ],
+            //'Backend.Menu.build.admin_system' => ['callable' => 'buildBackendSystemMenu', 'priority' => 90 ],
             //'Backend.Routes.build' => 'buildBackendRoutes'
         ];
     }

@@ -12,8 +12,8 @@ use Cron\Event\CronTaskEvent;
 
 class CronManager implements EventDispatcherInterface
 {
-    use InstanceConfigTrait;
     use EventDispatcherTrait;
+    use InstanceConfigTrait;
 
     /**
      * @var array Default config

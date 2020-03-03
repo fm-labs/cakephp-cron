@@ -25,6 +25,8 @@ class CronController extends Controller
 
     /**
      * Initialize cron tasks and attach event listeners
+     *
+     * @return void
      */
     public function initialize()
     {
@@ -34,11 +36,17 @@ class CronController extends Controller
         $this->cronManager = new CronManager($this->eventManager(), Configure::read('Cron.CronManager'));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function beforeFilter(Event $event)
     {
         $this->_loadCronJobs();
     }
 
+    /**
+     * @return void
+     */
     public function index()
     {
         $config = $this->cronManager->config();
@@ -51,6 +59,9 @@ class CronController extends Controller
 
     /**
      * Invoke cron task by action
+     *
+     * @return mixed
+     * @TODO Refactor this hack-ish code
      */
     public function invokeAction()
     {
@@ -76,6 +87,9 @@ class CronController extends Controller
         }
     }
 
+    /**
+     * @return void
+     */
     protected function _loadCronJobs()
     {
         $cronJobs = [];

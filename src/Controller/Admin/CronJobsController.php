@@ -2,7 +2,6 @@
 
 namespace Cron\Controller\Admin;
 
-use Backend\Controller\BackendActionsTrait;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Network\Response;
@@ -15,8 +14,6 @@ use Cron\Cron\CronManager;
  */
 class CronJobsController extends CronController
 {
-    use BackendActionsTrait;
-
     /**
      * @var string
      */
@@ -34,6 +31,9 @@ class CronJobsController extends CronController
      */
     public $cronManager;
 
+    /**
+     * {@inheritDoc}
+     */
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
@@ -55,7 +55,7 @@ class CronJobsController extends CronController
     }
 
     /**
-     * @return Response|null
+     * @return void
      */
     public function index()
     {
@@ -65,7 +65,7 @@ class CronJobsController extends CronController
     }
 
     /**
-     * @return Response|null
+     * @return void
      */
     public function add()
     {
@@ -74,6 +74,9 @@ class CronJobsController extends CronController
         $this->Action->execute();
     }
 
+    /**
+     * @return void
+     */
     public function view($id = null)
     {
         $cronJob = $this->CronJobs->find()/*->contain('CronJobresults', function(Query $q) {

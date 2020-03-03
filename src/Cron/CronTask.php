@@ -3,7 +3,6 @@
 namespace Cron\Cron;
 
 use Cake\Log\Log;
-use Cron\Cron\CronTaskInterface;
 
 /**
  * Class Task
@@ -15,7 +14,7 @@ abstract class CronTask
     protected $_log = [];
 
     /**
-     * @return array|TaskResult
+     * @return array|CronTaskResult
      */
     abstract function execute();
 
