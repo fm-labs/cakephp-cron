@@ -3,8 +3,8 @@ use Cake\Cache\Cache;
 use Cake\Log\Log;
 
 // setup cron cache
-if (!Cache::config('cron')) {
-    Cache::config('cron', [
+if (!Cache::getConfig('cron')) {
+    Cache::setConfig('cron', [
         'className' => 'File',
         'duration' => '+1 years',
         'path' => CACHE,
@@ -13,8 +13,8 @@ if (!Cache::config('cron')) {
 }
 
 // setup cron log
-if (!Log::config('cron')) {
-    Log::config('cron', [
+if (!Log::getConfig('cron')) {
+    Log::setConfig('cron', [
         'className' => 'Cake\Log\Engine\FileLog',
         'path' => LOGS,
         'file' => 'cron',

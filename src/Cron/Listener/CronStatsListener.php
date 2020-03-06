@@ -51,7 +51,7 @@ class CronStatsListener implements EventListenerInterface
         $statsDir = TMP . "cron" . DS;
         $folder = new Folder($statsDir, true, 0777);
 
-        $statsFile = $statsDir . $event->data['name'] . "_" . date("Y-m-d") . ".csv";
+        $statsFile = $statsDir . $event->getData('name') . "_" . date("Y-m-d") . ".csv";
         $file = new File($statsFile, true);
         $file->append($statStr);
         $file->close();

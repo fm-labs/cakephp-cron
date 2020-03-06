@@ -87,8 +87,8 @@ class CronTaskListener implements EventListenerInterface
         }
 
         // send error notifications
-        $notifyOnError = $event->getCronManager()->config('notify_on_error');
-        $notifyEmail = $event->getCronManager()->config('notify_email');
+        $notifyOnError = $event->getCronManager()->getConfig('notify_on_error');
+        $notifyEmail = $event->getCronManager()->getConfig('notify_email');
         if ($notifyOnError && $notifyEmail) {
             // send report mail
             if ($result->getStatus() == false) {
