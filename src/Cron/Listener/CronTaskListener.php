@@ -58,7 +58,7 @@ class CronTaskListener implements EventListenerInterface
 
         // database result logger
         try {
-            $Jobs = TableRegistry::get('Cron.CronJobs');
+            $Jobs = TableRegistry::getTableLocator()->get('Cron.CronJobs');
             $job = $Jobs->find()->where(['name' => $event->getTaskName()])->firstOrFail();
             $job->last_status = $result->getStatus();
             $job->last_message = $result->getMessage();
@@ -67,7 +67,7 @@ class CronTaskListener implements EventListenerInterface
                 throw new \RuntimeException("Failed to update CronJob");
             }
 
-            $JobResults = TableRegistry::get('Cron.CronJobresults');
+            $JobResults = TableRegistry::getTableLocator()->get('Cron.CronJobresults');
             $jobResult = $JobResults->newEntity([
                 'cron_job_id' => $job->id,
                 'status' => $result->getStatus(),

@@ -34,9 +34,9 @@ class CronJobresultsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('cron_jobresults');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('cron_jobresults');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
 

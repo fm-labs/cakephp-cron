@@ -2,7 +2,6 @@
 
 namespace Cron\Controller\Admin;
 
-use Cake\Controller\Controller;
 
 /**
  * Class AdminController
@@ -11,12 +10,12 @@ use Cake\Controller\Controller;
  * @property \Backend\Controller\Component\ActionComponent $Action
  * @property \Backend\Controller\Component\ActionComponent $Backend
  */
-class CronController extends Controller
+class CronController extends \Backend\Controller\Controller
 {
     /**
      * Index Action
      *
-     * @return \Cake\Network\Response
+     * @return \Cake\Http\Response
      */
     public function index()
     {

@@ -4,7 +4,7 @@ namespace Cron\Controller\Admin;
 
 use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\Network\Response;
+use Cake\Http\Response;
 use Cron\Cron\CronManager;
 
 /**

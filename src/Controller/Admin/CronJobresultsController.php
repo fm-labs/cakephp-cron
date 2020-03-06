@@ -3,7 +3,7 @@
 namespace Cron\Controller\Admin;
 
 use Cake\Core\Configure;
-use Cake\Network\Response;
+use Cake\Http\Response;
 
 /**
  * Class CronJobresultsController

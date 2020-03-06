@@ -31,9 +31,9 @@ class CronController extends Controller
     public function initialize()
     {
         // use CronView
-        $this->viewBuilder()->className('Cron.Cron');
+        $this->viewBuilder()->setClassName('Cron.Cron');
 
-        $this->cronManager = new CronManager($this->eventManager(), Configure::read('Cron.CronManager'));
+        $this->cronManager = new CronManager($this->getEventManager(), Configure::read('Cron.CronManager'));
     }
 
     /**
@@ -49,8 +49,8 @@ class CronController extends Controller
      */
     public function index()
     {
-        $config = $this->cronManager->config();
-        $force = (bool)$this->request->query('force');
+        $config = $this->cronManager->getConfig();
+        $force = (bool)$this->request->getQuery('force');
         $results = $this->cronManager->executeAll($force);
 
         $this->set(compact('config', 'results'));
@@ -68,15 +68,15 @@ class CronController extends Controller
         try {
             return parent::invokeAction();
         } catch (MissingActionException $ex) {
-            $action = (string)$this->request->param('action');
-            $force = (bool)$this->request->query('force');
+            $action = (string)$this->request->getParam('action');
+            $force = (bool)$this->request->getQuery('force');
 
             if (!$this->cronManager->hasTask($action)) {
                 throw new MissingActionException([
                     'controller' => $this->name . "Controller",
-                    'action' => $this->request->params['action'],
-                    'prefix' => isset($this->request->params['prefix']) ? $this->request->params['prefix'] : '',
-                    'plugin' => $this->request->params['plugin'],
+                    'action' => $this->request->getParam('action'),
+                    'prefix' => $this->request->getParam('prefix') ?: '',
+                    'plugin' => $this->request->getParam('plugin'),
                 ]);
             }
 

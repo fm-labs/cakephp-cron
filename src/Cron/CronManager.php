@@ -39,16 +39,16 @@ class CronManager implements EventDispatcherInterface
      */
     public function __construct(EventManager $eventManger = null, $config = [])
     {
-        $this->config($config);
-        $this->eventManager($eventManger);
-        $this->eventManager()->on(new CronTaskListener());
+        $this->setConfig($config);
+        $this->setEventManager($eventManger);
+        $this->getEventManager()->on(new CronTaskListener());
 
         $this->_registry = new CronTaskRegistry();
     }
 
     public function __destruct()
     {
-        $this->eventManager()->off($this);
+        $this->getEventManager()->off($this);
     }
 
     public function loadTask($taskName, array $config = [])
@@ -145,7 +145,7 @@ class CronManager implements EventDispatcherInterface
             // dispatch beforeTask event
             // if event result is a CronTaskResult instance, the task won't be executed
             // the CronTaskResult instance will be returned instead
-            $event = $this->eventManager()->dispatch(new CronTaskEvent('Cron.beforeTask', $this, ['name' => $taskName, 'config' => $config, 'task' => $task]));
+            $event = $this->getEventManager()->dispatch(new CronTaskEvent('Cron.beforeTask', $this, ['name' => $taskName, 'config' => $config, 'task' => $task]));
             if ($event->result instanceof CronTaskResult) {
                 $result = $event->result;
             } else {
@@ -159,7 +159,7 @@ class CronManager implements EventDispatcherInterface
         }
 
         // dispatch afterTask event
-        $event = $this->eventManager()->dispatch(new CronTaskEvent('Cron.afterTask', $this, ['name' => $taskName, 'config' => $config, 'result' => $result]));
+        $event = $this->getEventManager()->dispatch(new CronTaskEvent('Cron.afterTask', $this, ['name' => $taskName, 'config' => $config, 'result' => $result]));
         if ($event->result instanceof CronTaskResult) {
             $result = $event->result;
         }

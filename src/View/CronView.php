@@ -13,7 +13,7 @@ class CronView extends View
 {
     public function render($view = null, $layout = null)
     {
-        $this->response->type('text');
+        $this->response = $this->response->withType('text');
 
         $content = "";
 
