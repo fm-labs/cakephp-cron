@@ -23,7 +23,7 @@ class CronJobsController extends CronController
         'index' => 'Backend.Index',
         'add' => 'Backend.Add',
         'view' => 'Backend.View',
-        'edit' => 'Backend.Edit'
+        'edit' => 'Backend.Edit',
     ];
 
     /**
@@ -97,7 +97,7 @@ class CronJobsController extends CronController
         //$cronJobResults = $this->CronJobs->CronJobresults->find()->where(['cron_job_id' => $id])->limit(30)->all();
         //$this->set('cronJobResults', $cronJobResults);
         $this->set('tabs', [
-           'results' => ['title' => 'Results', 'url' => ['controller' => 'CronJobresults', 'action' => 'index', 'qry' => ['cron_job_id' => $id]]]
+           'results' => ['title' => 'Results', 'url' => ['controller' => 'CronJobresults', 'action' => 'index', 'qry' => ['cron_job_id' => $id]]],
         ]);
 
         $this->Action->execute();
@@ -111,7 +111,7 @@ class CronJobsController extends CronController
         $job = $this->CronJobs->get($id, ['contain' => []]);
 
         return $this->redirect([
-            'prefix' => false, 'plugin' => 'Cron', 'controller' => 'Cron', 'action' => $job->name
+            'prefix' => false, 'plugin' => 'Cron', 'controller' => 'Cron', 'action' => $job->name,
         ]);
     }
 }

@@ -43,7 +43,7 @@ class CronJobsTable extends Table
         $this->hasMany('CronJobresults', [
             'foreignKey' => 'cron_job_id',
             'className' => 'Cron.CronJobresults',
-            'order' => ['CronJobresults.id' => 'ASC']
+            'order' => ['CronJobresults.id' => 'ASC'],
         ]);
     }
 

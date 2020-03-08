@@ -61,7 +61,7 @@ class CronTaskResult
         $this->_data = [
             'status'    => (int)$status,
             'message'   => (string)$message,
-            'timestamp' => (int)$timestamp
+            'timestamp' => (int)$timestamp,
         ];
         $this->_log = $log;
     }

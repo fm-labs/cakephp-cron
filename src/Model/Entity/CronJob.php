@@ -33,11 +33,11 @@ class CronJob extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'id' => false,
     ];
 
     protected $_virtual = [
-        'offset' => true
+        'offset' => true,
     ];
 
     protected function _getOffset()

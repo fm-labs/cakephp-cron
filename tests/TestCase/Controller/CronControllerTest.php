@@ -21,8 +21,8 @@ class CronControllerTest extends IntegrationTestCase
         Configure::write('Cron.Tasks', [
             'test' => [
                'className' => 'Cron\\Test\\TestCase\\TestCronTask',
-               'interval' => 0
-            ]
+               'interval' => 0,
+            ],
         ]);
     }
 

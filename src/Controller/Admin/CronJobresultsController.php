@@ -29,7 +29,7 @@ class CronJobresultsController extends CronController
     {
         $this->paginate = [
             'contain' => ['CronJobs'],
-            'order' => ['CronJobresults.id' => 'DESC']
+            'order' => ['CronJobresults.id' => 'DESC'],
         ];
         $this->set('fields', [
             'id',
@@ -37,7 +37,7 @@ class CronJobresultsController extends CronController
             'status',
             'message',
             //'timestamp' => ['formatter' => 'timestamp'],
-            'created'
+            'created',
         ]);
         $this->set('fields.blacklist', ['log', 'client_ip']);
         $this->Action->execute();

@@ -19,12 +19,12 @@ class CronTaskListener implements EventListenerInterface
     /**
      * @var int Default log level
      */
-    static public $logLevel = LOG_DEBUG;
+    public static $logLevel = LOG_DEBUG;
 
     /**
      * @var array Default log context
      */
-    static public $logContext = ['cron'];
+    public static $logContext = ['cron'];
 
     /**
      * @return array List of implemented events
@@ -73,7 +73,7 @@ class CronTaskListener implements EventListenerInterface
                 'status' => $result->getStatus(),
                 'message' => $result->getMessage(),
                 'timestamp' => $result->getTimestamp(),
-                'log' => join("\n", $result->getLog())
+                'log' => join("\n", $result->getLog()),
             ]);
             if (!$JobResults->save($jobResult)) {
                 throw new \RuntimeException("Failed to add CronJobresult");
@@ -94,13 +94,13 @@ class CronTaskListener implements EventListenerInterface
             if ($result->getStatus() == false) {
                 try {
                     $email = new Email('admin');
-                    $email->subject('Cronjob result notification for '. $event->getTaskName());
+                    $email->subject('Cronjob result notification for ' . $event->getTaskName());
                     $email->template('Cron.cron_result_notify', false);
                     $email->viewVars([
                         'status' => $result->getStatus(),
                         'timestamp' => $result->getTimestamp(),
                         'message' => $result->getMessage(),
-                        'log' => $result->getLog()
+                        'log' => $result->getLog(),
                     ]);
                     $email->send();
                 } catch (\Exception $e) {

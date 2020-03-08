@@ -8,7 +8,7 @@ if (!Cache::getConfig('cron')) {
         'className' => 'File',
         'duration' => '+1 years',
         'path' => CACHE,
-        'prefix' => 'cron_'
+        'prefix' => 'cron_',
     ]);
 }
 
@@ -19,6 +19,6 @@ if (!Log::getConfig('cron')) {
         'path' => LOGS,
         'file' => 'cron',
         //'levels' => ['notice', 'info', 'debug'],
-        'scopes' => ['cron']
+        'scopes' => ['cron'],
     ]);
 }

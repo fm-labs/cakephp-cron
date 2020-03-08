@@ -2,7 +2,6 @@
 
 namespace Cron\Controller\Admin;
 
-
 /**
  * Class AdminController
  *

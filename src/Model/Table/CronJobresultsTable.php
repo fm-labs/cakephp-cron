@@ -43,7 +43,7 @@ class CronJobresultsTable extends Table
         $this->belongsTo('CronJobs', [
             'foreignKey' => 'cron_job_id',
             'joinType' => 'INNER',
-            'className' => 'Cron.CronJobs'
+            'className' => 'Cron.CronJobs',
         ]);
     }
 
