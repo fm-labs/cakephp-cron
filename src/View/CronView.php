@@ -12,7 +12,7 @@ use Cake\View\View;
  */
 class CronView extends View
 {
-    public function render($view = null, $layout = null)
+    public function render(?string $template = null, $layout = null): string
     {
         $this->response = $this->response->withType('text');
 

@@ -8,6 +8,7 @@ use Cake\Controller\Exception\MissingActionException;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Log\Log;
+use Closure;
 use Cron\Cron\CronManager;
 
 /**
@@ -29,7 +30,7 @@ class CronController extends Controller
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
         // use CronView
         $this->viewBuilder()->setClassName('Cron.Cron');
@@ -64,10 +65,10 @@ class CronController extends Controller
      * @return mixed
      * @TODO Refactor this hack-ish code
      */
-    public function invokeAction()
+    public function invokeAction(Closure $action, array $args): void
     {
         try {
-            return parent::invokeAction();
+            parent::invokeAction($action, $args);
         } catch (MissingActionException $ex) {
             $action = (string)$this->request->getParam('action');
             $force = (bool)$this->request->getQuery('force');
