@@ -57,26 +57,26 @@ class CronJobresultsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->integer('status')
             ->requirePresence('status', 'create')
-            ->notEmpty('status');
+            ->notEmptyString('status');
 
         $validator
             ->requirePresence('message', 'create')
-            ->notEmpty('message');
+            ->notEmptyString('message');
 
         $validator
-            ->allowEmpty('log');
+            ->allowEmptyString('log');
 
         $validator
             ->integer('timestamp')
-            ->allowEmpty('timestamp');
+            ->allowEmptyString('timestamp');
 
         $validator
-            ->allowEmpty('client_ip');
+            ->allowEmptyString('client_ip');
 
         return $validator;
     }

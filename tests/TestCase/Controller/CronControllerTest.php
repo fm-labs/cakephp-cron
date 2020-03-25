@@ -3,15 +3,18 @@
 namespace Cron\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
-use Cake\TestSuite\IntegrationTestCase;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
 
 /**
  * Class CronControllerTest
  *
  * @package Cron\Test\TestCase\Controller
  */
-class CronControllerTest extends IntegrationTestCase
+class CronControllerTest extends TestCase
 {
+    use IntegrationTestTrait;
+
     /**
      * Setup
      */

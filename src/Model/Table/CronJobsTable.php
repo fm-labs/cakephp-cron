@@ -57,40 +57,40 @@ class CronJobsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmptyString('id', 'create');
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name')
+            ->notEmptyString('name')
             ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->requirePresence('class', 'create')
-            ->notEmpty('class');
+            ->notEmptyString('class');
 
         $validator
-            ->allowEmpty('desc');
+            ->allowEmptyString('desc');
 
         $validator
             ->integer('interval')
             ->requirePresence('interval', 'create')
-            ->notEmpty('interval');
+            ->notEmptyString('interval');
 
         $validator
             ->boolean('is_active')
             ->requirePresence('is_active', 'create')
-            ->notEmpty('is_active');
+            ->notEmptyString('is_active');
 
         $validator
             ->integer('last_status')
-            ->allowEmpty('last_status');
+            ->allowEmptyString('last_status');
 
         $validator
-            ->allowEmpty('last_message');
+            ->allowEmptyString('last_message');
 
         $validator
             ->integer('last_executed')
-            ->allowEmpty('last_executed');
+            ->allowEmptyString('last_executed');
 
         return $validator;
     }

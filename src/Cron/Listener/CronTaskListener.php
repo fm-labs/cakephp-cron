@@ -94,14 +94,14 @@ class CronTaskListener implements EventListenerInterface
             if ($result->getStatus() == false) {
                 try {
                     $email = new Email('admin');
-                    $email->subject('Cronjob result notification for ' . $event->getTaskName());
-                    $email->template('Cron.cron_result_notify', false);
-                    $email->viewVars([
+                    $email->setSubject('Cronjob result notification for ' . $event->getTaskName());
+                    $email->setViewVars([
                         'status' => $result->getStatus(),
                         'timestamp' => $result->getTimestamp(),
                         'message' => $result->getMessage(),
                         'log' => $result->getLog(),
                     ]);
+                    $email->viewBuilder()->setTemplate('Cron.cron_result_notify', false);
                     $email->send();
                 } catch (\Exception $e) {
                     Log::error(sprintf(
