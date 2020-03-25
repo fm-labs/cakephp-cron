@@ -18,7 +18,7 @@ class CronStatsListener implements EventListenerInterface
     /**
      * @return array List of implemented events
      */
-    public function implementedEvents()
+    public function implementedEvents(): array
     {
         return [
             'Cron.beforeTask' => 'beforeTask',
