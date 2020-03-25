@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace Cron\Model\Table;
 
-use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -23,7 +24,6 @@ use Cake\Validation\Validator;
  */
 class CronJobresultsTable extends Table
 {
-
     /**
      * Initialize method
      *

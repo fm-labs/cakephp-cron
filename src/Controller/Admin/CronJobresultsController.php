@@ -1,9 +1,7 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Controller\Admin;
-
-use Cake\Core\Configure;
-use Cake\Http\Response;
 
 /**
  * Class CronJobresultsController

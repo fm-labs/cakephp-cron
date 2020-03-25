@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Controller;
 
@@ -19,7 +20,7 @@ class CronController extends Controller
     public $modelClass = "Cron.CronJobs";
 
     /**
-     * @var CronManager
+     * @var \Cron\Cron\CronManager
      */
     public $cronManager;
 

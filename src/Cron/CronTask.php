@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Cron;
 
@@ -14,7 +15,7 @@ abstract class CronTask
     protected $_log = [];
 
     /**
-     * @return array|CronTaskResult
+     * @return array|\Cron\Cron\CronTaskResult
      */
     abstract function execute();
 
@@ -26,7 +27,7 @@ abstract class CronTask
      */
     public function log($message, $level = 'info')
     {
-        $className = get_class($this);
+        $className = static::class;
         $taskName = substr($className, strrpos($className, '\\') + 1);
         $this->_log[] = $message = sprintf("[%s] %s", $taskName, $message);
 

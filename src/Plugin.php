@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron;
 
@@ -32,7 +33,7 @@ class Plugin extends BasePlugin implements EventListenerInterface
     }
 
     /**
-     * @param Event $event
+     * @param \Cake\Event\Event $event
      */
     public function buildBackendMenu(Event $event, \Banana\Menu\Menu $menu)
     {

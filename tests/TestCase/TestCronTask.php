@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Test\TestCase;
 
 use Cron\Cron\CronTask;
-use Cron\Cron\CronTaskResult;
 
 /**
  * Class TestCronTask
@@ -11,7 +11,6 @@ use Cron\Cron\CronTaskResult;
  */
 class TestCronTask extends CronTask
 {
-
     /**
      * @return bool|CronTaskResult|null|mixed
      */

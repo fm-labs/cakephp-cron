@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Cron;
 
@@ -13,7 +14,6 @@ use RuntimeException;
  */
 class CronTaskRegistry extends ObjectRegistry
 {
-
     /**
      * Resolve a cron task classname.
      *
@@ -84,7 +84,7 @@ class CronTaskRegistry extends ObjectRegistry
      * Get loaded cron task instance
      *
      * @param string $name
-     * @return null|CronTask
+     * @return null|\Cron\Cron\CronTask
      */
     public function get($name)
     {

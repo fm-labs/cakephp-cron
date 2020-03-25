@@ -1,10 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Controller\Admin;
 
-use Cake\Core\Configure;
 use Cake\Event\Event;
-use Cake\Http\Response;
 use Cron\Cron\CronManager;
 
 /**
@@ -27,7 +26,7 @@ class CronJobsController extends CronController
     ];
 
     /**
-     * @var CronManager
+     * @var \Cron\Cron\CronManager
      */
     public $cronManager;
 
@@ -43,7 +42,7 @@ class CronJobsController extends CronController
     }
 
     /**
-     * @return CronManager
+     * @return \Cron\Cron\CronManager
      */
     public function cronManager()
     {

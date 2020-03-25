@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Event;
 
 use Cake\Event\Event;
-use Cron\Cron\CronTaskResult;
 
 /**
  * Class CronTaskEvent
@@ -29,7 +29,7 @@ class CronTaskEvent extends Event
     }
 
     /**
-     * @return CronTaskResult
+     * @return \Cron\Cron\CronTaskResult
      */
     public function getResult()
     {

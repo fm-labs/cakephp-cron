@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Cron;
 
@@ -9,7 +10,6 @@ namespace Cron\Cron;
  */
 class CronTaskResult
 {
-
     /**
      * @var array
      */
@@ -44,11 +44,11 @@ class CronTaskResult
     {
         if (is_array($status)) {
             if (count($status) == 1) {
-                list($status) = $status;
+                [$status] = $status;
             } elseif (count($status) == 2) {
-                list($status, $message) = $status;
+                [$status, $message] = $status;
             } elseif (count($status) >= 3) {
-                list($status, $message, $timestamp) = $status;
+                [$status, $message, $timestamp] = $status;
             }
         }
 

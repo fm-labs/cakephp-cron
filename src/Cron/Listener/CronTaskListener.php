@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Cron\Listener;
 
@@ -15,7 +16,6 @@ use Cron\Event\CronTaskEvent;
  */
 class CronTaskListener implements EventListenerInterface
 {
-
     /**
      * @var int Default log level
      */
@@ -40,7 +40,7 @@ class CronTaskListener implements EventListenerInterface
     /**
      * Log beforeTask event
      *
-     * @param CronTaskEvent $event
+     * @param \Cron\Event\CronTaskEvent $event
      */
     public function beforeTask(CronTaskEvent $event)
     {
@@ -50,7 +50,7 @@ class CronTaskListener implements EventListenerInterface
     /**
      * Log afterTask event
      *
-     * @param CronTaskEvent $event
+     * @param \Cron\Event\CronTaskEvent $event
      */
     public function afterTask(CronTaskEvent $event)
     {

@@ -1,12 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Cron\Listener;
 
 use Cake\Event\EventListenerInterface;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
-use Cake\Log\Log;
-use Cron\Cron\CronTaskResult;
 
 /**
  * Class CronStatsListener
@@ -29,7 +28,7 @@ class CronStatsListener implements EventListenerInterface
     /**
      * Log beforeTask event
      *
-     * @param CronTaskEvent $event
+     * @param \Cron\Cron\Listener\CronTaskEvent $event
      */
     public function beforeTask(CronTaskEvent $event)
     {
@@ -38,7 +37,7 @@ class CronStatsListener implements EventListenerInterface
     /**
      * Log afterTask event
      *
-     * @param CronTaskEvent $event
+     * @param \Cron\Cron\Listener\CronTaskEvent $event
      */
     public function afterTask(CronTaskEvent $event)
     {

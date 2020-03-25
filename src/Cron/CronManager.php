@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
 
 namespace Cron\Cron;
 
-use Cake\Core\Configure;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Event\EventDispatcherInterface;
 use Cake\Event\EventDispatcherTrait;
@@ -24,7 +24,7 @@ class CronManager implements EventDispatcherInterface
     ];
 
     /**
-     * @var CronTaskRegistry
+     * @var \Cron\Cron\CronTaskRegistry
      */
     protected $_registry;
 
@@ -34,10 +34,10 @@ class CronManager implements EventDispatcherInterface
     protected $_tasks;
 
     /**
-     * @param EventManager $eventManger
+     * @param \Cake\Event\EventManager $eventManger
      * @param array $config
      */
-    public function __construct(EventManager $eventManger = null, $config = [])
+    public function __construct(?EventManager $eventManger = null, $config = [])
     {
         $this->setConfig($config);
         $this->setEventManager($eventManger);
@@ -75,7 +75,7 @@ class CronManager implements EventDispatcherInterface
 
     /**
      * Has task instance
-     * @return CronTask
+     * @return \Cron\Cron\CronTask
      */
     public function hasTask($taskName)
     {
@@ -84,7 +84,7 @@ class CronManager implements EventDispatcherInterface
 
     /**
      * Get task instance
-     * @return CronTask
+     * @return \Cron\Cron\CronTask
      */
     public function getTask($taskName)
     {
@@ -112,7 +112,7 @@ class CronManager implements EventDispatcherInterface
      *
      * @param $taskName
      * @param bool $force Set to TRUE to force execute (Defaults to FALSE)
-     * @return CronTaskResult
+     * @return \Cron\Cron\CronTaskResult
      */
     public function executeTask($taskName, $force = false)
     {
@@ -121,9 +121,9 @@ class CronManager implements EventDispatcherInterface
 
     /**
      * @param $taskName
-     * @param CronTask $task
+     * @param \Cron\Cron\CronTask $task
      * @param bool $force
-     * @return CronTaskResult
+     * @return \Cron\Cron\CronTaskResult
      */
     protected function _execute($taskName, CronTask $task, $force = false)
     {
