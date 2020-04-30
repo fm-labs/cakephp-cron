@@ -19,10 +19,10 @@ class CronJobsController extends CronController
     public $modelClass = "Cron.CronJobs";
 
     public $actions = [
-        'index' => 'Backend.Index',
-        'add' => 'Backend.Add',
-        'view' => 'Backend.View',
-        'edit' => 'Backend.Edit',
+        'index' => 'Admin.Index',
+        'add' => 'Admin.Add',
+        'view' => 'Admin.View',
+        'edit' => 'Admin.Edit',
     ];
 
     /**

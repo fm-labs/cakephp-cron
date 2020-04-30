@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Cron;
 
-use Banana\Plugin\BasePlugin;
+use Cupcake\Plugin\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
@@ -28,14 +28,14 @@ class Plugin extends BasePlugin implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            'Backend.Menu.build.admin_primary' => ['callable' => 'buildBackendMenu', 'priority' => 90 ],
+            'Admin.Menu.build.admin_primary' => ['callable' => 'buildAdminMenu', 'priority' => 90 ],
         ];
     }
 
     /**
      * @param \Cake\Event\Event $event
      */
-    public function buildBackendMenu(Event $event, \Banana\Menu\Menu $menu)
+    public function buildAdminMenu(Event $event, \Cupcake\Menu\Menu $menu)
     {
         $menu->addItem([
             'title' => 'Cron Jobs',
@@ -51,7 +51,7 @@ class Plugin extends BasePlugin implements EventListenerInterface
         EventManager::instance()->on($this);
     }
 
-    public function backendRoutes($routes)
+    public function adminRoutes($routes)
     {
         $routes->fallbacks(DashedRoute::class);
     }

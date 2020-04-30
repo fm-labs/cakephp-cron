@@ -7,10 +7,10 @@ namespace Cron\Controller\Admin;
  * Class AdminController
  *
  * @package Cron\Controller
- * @property \Backend\Controller\Component\ActionComponent $Action
- * @property \Backend\Controller\Component\ActionComponent $Backend
+ * @property \Admin\Controller\Component\ActionComponent $Action
+ * @property \Admin\Controller\Component\ActionComponent $Admin
  */
-class CronController extends \Backend\Controller\Controller
+class CronController extends \Admin\Controller\Controller
 {
     /**
      * Index Action
