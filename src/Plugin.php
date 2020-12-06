@@ -35,7 +35,7 @@ class Plugin extends BasePlugin implements EventListenerInterface
     /**
      * @param \Cake\Event\Event $event
      */
-    public function buildAdminMenu(Event $event, \Cupcake\Menu\Menu $menu)
+    public function buildAdminMenu(Event $event, \Cupcake\Menu\MenuItemCollection $menu)
     {
         $menu->addItem([
             'title' => 'Cron Jobs',
