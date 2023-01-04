@@ -12,13 +12,13 @@ namespace Cron\Controller\Admin;
  */
 class CronController extends \Admin\Controller\Controller
 {
-    /**
-     * Index Action
-     *
-     * @return \Cake\Http\Response
-     */
-    public function index()
-    {
-        return $this->redirect(['controller' => 'CronJobs', 'action' => 'index']);
-    }
+//    /**
+//     * Index Action
+//     *
+//     * @return \Cake\Http\Response
+//     */
+//    public function index()
+//    {
+//        return $this->redirect(['controller' => 'CronJobs', 'action' => 'index']);
+//    }
 }

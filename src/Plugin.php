@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace Cron;
 
+use Cake\Routing\RouteBuilder;
 use Cupcake\Plugin\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
-use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
-use Cake\Routing\Route\DashedRoute;
 
 /**
  * Class CronPlugin
@@ -27,32 +26,30 @@ class Plugin extends BasePlugin implements EventListenerInterface
      */
     public function implementedEvents(): array
     {
-        return [
-            'Admin.Menu.build.admin_primary' => ['callable' => 'buildAdminMenu', 'priority' => 90 ],
-        ];
-    }
-
-    /**
-     * @param \Cake\Event\Event $event
-     */
-    public function buildAdminMenu(Event $event, \Cupcake\Menu\MenuItemCollection $menu)
-    {
-        $menu->addItem([
-            'title' => 'Cron Jobs',
-            'url' => ['plugin' => 'Cron', 'controller' => 'CronJobs', 'action' => 'index'],
-            'data-icon' => 'clock-o',
-        ]);
+        return [];
     }
 
     public function bootstrap(PluginApplicationInterface $app): void
     {
         parent::bootstrap($app);
 
+
+        /**
+         * Admin plugin
+         */
+        if (\Cake\Core\Plugin::isLoaded('Admin')) {
+            \Admin\Admin::addPlugin(new \Cron\Admin());
+        }
+
+        $eventManager = EventManager::instance();
+        $eventManager->on($this);
+
         EventManager::instance()->on($this);
     }
 
-    public function adminRoutes($routes)
+    public function routes(RouteBuilder $routes): void
     {
-        $routes->fallbacks(DashedRoute::class);
+        $routes->connect('/', ['controller' => 'CronJobs']);
+        $routes->connect('/:action', ['controller' => 'CronJobs']);
     }
 }
