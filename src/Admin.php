@@ -40,8 +40,8 @@ class Admin extends BaseAdminPlugin implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            'Admin.Menu.build.admin_primary' => ['callable' => 'buildAdminMenu', 'priority' => 5 ],
-            'Admin.Menu.build.admin_system' => ['callable' => 'buildAdminSystemMenu', 'priority' => 5 ],
+            'Admin.Menu.build.admin_primary' => ['callable' => 'buildAdminMenu' /*, 'priority' => 5*/ ],
+            'Admin.Menu.build.admin_system' => ['callable' => 'buildAdminSystemMenu' /*, 'priority' => 5*/ ],
         ];
     }
 
@@ -52,11 +52,6 @@ class Admin extends BaseAdminPlugin implements EventListenerInterface
      */
     public function buildAdminMenu(Event $event, \Cupcake\Menu\MenuItemCollection $menu): void
     {
-        $menu->addItem([
-            'title' => 'Cron Jobs',
-            'url' => ['plugin' => 'Cron', 'controller' => 'CronJobs', 'action' => 'index'],
-            'data-icon' => 'clock-o',
-        ]);
     }
 
     /**
@@ -66,13 +61,10 @@ class Admin extends BaseAdminPlugin implements EventListenerInterface
      */
     public function buildAdminSystemMenu(Event $event, \Cupcake\Menu\MenuItemCollection $menu): void
     {
-        /*
         $menu->addItem([
-            'title' => 'Content',
-            'url' => ['plugin' => 'Content', 'controller' => 'Info', 'action' => 'index'],
-            'data-icon' => 'info',
-            'children' => [],
+            'title' => 'Cron Jobs',
+            'url' => ['plugin' => 'Cron', 'controller' => 'CronJobs', 'action' => 'index'],
+            'data-icon' => 'clock-o',
         ]);
-        */
     }
 }
