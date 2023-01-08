@@ -3,17 +3,31 @@ declare(strict_types=1);
 
 namespace Cron\Cron;
 
+use Cake\Utility\Hash;
+
 /**
  * Class CronTaskResult
+ *
+ * Example:
+ * new CronTaskResult( 0, 'Custom message', 123456789)
+ * new CronTaskResult( [0, 'Custom message', 123456789])
+ * new CronTaskResult( true)
+ * new CronTaskResult( [true])
+ * new CronTaskResult( [false, 'Custom error message'])
  *
  * @package Cron\Cron
  */
 class CronTaskResult
 {
-    /**
-     * @var array
-     */
-    protected $_data = [];
+    protected const STATUS_NOT_EXECUTED = -1;
+    protected const STATUS_FAIL = 0;
+    protected const STATUS_OK = 1;
+
+    protected $_status = self::STATUS_NOT_EXECUTED;
+
+    protected $_message = "";
+
+    protected $_timestamp;
 
     /**
      * @var array List of log messages
@@ -21,78 +35,98 @@ class CronTaskResult
     protected $_log = [];
 
     /**
+     * @var array Meta data
+     */
+    protected $_meta = [];
+
+    /**
      * Constructor
-     *
-     * Example:
-     * new CronTaskResult( 0, 'Custom message', 123456789)
-     *
-     * new CronTaskResult( [0, 'Custom message', 123456789])
-     *
-     * new CronTaskResult( true)
-     *
-     * new CronTaskResult( [true])
-     *
-     * new CronTaskResult( [false, 'Custom error message'])
-     *
-     *
      *
      * @param bool|int $status Boolean TRUE maps to STATUS_OK, FALSE to STATUS_FAIL
      * @param string $message Custom result message string
-     * @param null $timestamp
+     * @param array $meta Optional Meta data
+     * @param array $log Optional Log lines
      */
-    public function __construct($status, $message = "", $timestamp = null, $log = [])
+    public function __construct($status, $message = "", array $meta = [], array $log = [])
     {
         if (is_array($status)) {
-            if (count($status) == 1) {
-                [$status] = $status;
-            } elseif (count($status) == 2) {
-                [$status, $message] = $status;
-            } elseif (count($status) >= 3) {
-                [$status, $message, $timestamp] = $status;
-            }
+            [$status, $message] = $status;
         }
-
-        if (!$timestamp) {
-            $timestamp = time();
-        } elseif ($timestamp instanceof \DateTime) {
-            $timestamp = $timestamp->getTimestamp();
-        }
-
-        $this->_data = [
-            'status'    => (int)$status,
-            'message'   => (string)$message,
-            'timestamp' => (int)$timestamp,
-        ];
+        $this->_status = (int)$status;
+        $this->_message = (string)$message;
         $this->_log = $log;
+        $this->_timestamp = time();
     }
 
     /**
      * @return int
      */
-    public function getStatus()
+    public function getStatus(): int
     {
-        return $this->_data['status'];
+        return $this->_status;
     }
 
     /**
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
-        return $this->_data['message'];
+        return $this->_message;
     }
 
     /**
      * @return int
      */
-    public function getTimestamp()
+    public function getTimestamp(): int
     {
-        return $this->_data['timestamp'];
+        return $this->_timestamp;
     }
 
-    public function getLog()
+    /**
+     * @param array $log
+     * @return $this
+     */
+    public function setLog(array $log)
+    {
+        $this->_log = $log;
+        return $this;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getLog(): array
     {
         return $this->_log;
+    }
+
+    /**
+     * @param array $meta
+     * @return $this
+     */
+    public function setMetaData(array $meta)
+    {
+        $this->_meta = Hash::merge($this->_meta, $meta);
+        return $this;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function getMetaData($key = null): array
+    {
+        if ($key === null) {
+            return $this->_meta;
+        }
+        return Hash::get($this->_meta, $key);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuccess(): bool
+    {
+        return $this->_status === self::STATUS_OK;
     }
 
     /**
@@ -100,7 +134,11 @@ class CronTaskResult
      */
     public function toArray()
     {
-        return $this->_data;
+        return [
+            'status' => $this->_status,
+            'message' => $this->_message,
+            'timestamp' => $this->_timestamp
+        ];
     }
 
     /**
@@ -113,9 +151,9 @@ class CronTaskResult
     {
         return sprintf(
             "%d %d %s",
-            $this->_data['timestamp'],
-            $this->_data['status'],
-            $this->_data['message']
+            $this->_timestamp,
+            $this->_status,
+            $this->_message
         );
     }
 }

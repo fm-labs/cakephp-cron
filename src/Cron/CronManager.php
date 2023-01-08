@@ -7,7 +7,7 @@ use Cake\Core\InstanceConfigTrait;
 use Cake\Event\EventDispatcherInterface;
 use Cake\Event\EventDispatcherTrait;
 use Cake\Event\EventManager;
-use Cron\Cron\Listener\CronTaskListener;
+use Cron\Cron\Task\BaseCronTask;
 use Cron\Event\CronTaskEvent;
 
 class CronManager implements EventDispatcherInterface
@@ -41,14 +41,14 @@ class CronManager implements EventDispatcherInterface
     {
         $this->setConfig($config);
         $this->setEventManager($eventManger);
-        $this->getEventManager()->on(new CronTaskListener());
+        //$this->getEventManager()->on(new CronLoggingService());
 
         $this->_registry = new CronTaskRegistry();
     }
 
     public function __destruct()
     {
-        $this->getEventManager()->off($this);
+        //$this->getEventManager()->off($this);
     }
 
     public function loadTask($taskName, array $config = [])
@@ -65,26 +65,26 @@ class CronManager implements EventDispatcherInterface
         return $this;
     }
 
-    /**
-     * @return array List of loaded task names
-     */
-    public function loadedTasks()
-    {
-        return $this->_registry->loaded();
-    }
-
-    /**
-     * Has task instance
-     * @return \Cron\Cron\CronTask
-     */
-    public function hasTask($taskName)
-    {
-        return $this->_registry->has($taskName);
-    }
+//    /**
+//     * @return array List of loaded task names
+//     */
+//    public function loadedTasks()
+//    {
+//        return $this->_registry->loaded();
+//    }
+//
+//    /**
+//     * Has task instance
+//     * @return \Cron\Cron\CronTask
+//     */
+//    public function hasTask($taskName)
+//    {
+//        return $this->_registry->has($taskName);
+//    }
 
     /**
      * Get task instance
-     * @return \Cron\Cron\CronTask
+     * @return \Cron\Cron\Task\BaseCronTask
      */
     public function getTask($taskName)
     {
@@ -121,11 +121,11 @@ class CronManager implements EventDispatcherInterface
 
     /**
      * @param $taskName
-     * @param \Cron\Cron\CronTask $task
+     * @param \Cron\Cron\Task\BaseCronTask $task
      * @param bool $force
      * @return \Cron\Cron\CronTaskResult
      */
-    protected function _execute($taskName, CronTask $task, $force = false)
+    protected function _execute($taskName, BaseCronTask $task, $force = false)
     {
         $config = $this->_tasks[$taskName];
         $result = null;
@@ -146,8 +146,8 @@ class CronManager implements EventDispatcherInterface
             // if event result is a CronTaskResult instance, the task won't be executed
             // the CronTaskResult instance will be returned instead
             $event = $this->getEventManager()->dispatch(new CronTaskEvent('Cron.beforeTask', $this, ['name' => $taskName, 'config' => $config, 'task' => $task]));
-            if ($event->result instanceof CronTaskResult) {
-                $result = $event->result;
+            if ($event->getResult() instanceof CronTaskResult) {
+                $result = $event->getResult();
             } else {
                 $result = $task->execute();
                 if (!($result instanceof CronTaskResult)) {
@@ -160,8 +160,8 @@ class CronManager implements EventDispatcherInterface
 
         // dispatch afterTask event
         $event = $this->getEventManager()->dispatch(new CronTaskEvent('Cron.afterTask', $this, ['name' => $taskName, 'config' => $config, 'result' => $result]));
-        if ($event->result instanceof CronTaskResult) {
-            $result = $event->result;
+        if ($event->getResult() instanceof CronTaskResult) {
+            $result = $event->getResult();
         }
 
         // cache last result

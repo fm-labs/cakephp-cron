@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Cron\Cron\Task;
 
-use Cron\Cron\CronTask;
 use Cron\Cron\CronTaskResult;
 
 /**
@@ -11,20 +10,21 @@ use Cron\Cron\CronTaskResult;
  *
  * @package Cron\Cron\Task
  */
-class DebugCronTask extends CronTask
+class DebugCronTask extends BaseCronTask
 {
     /**
-     * @return array
+     * {@inheritDoc}
      */
     public function execute()
     {
         $time = new \DateTime();
-        $this->log(sprintf("DebugCronTask was executed on %s", $time->format("Y-m-d H:i:s")), LOG_DEBUG);
+        $this->log(sprintf("DebugCronTask was executed on %s", $time->format("Y-m-d H:i:s")), 'info');
 
         if (rand(0, 100) < 50) {
-            return new CronTaskResult(true, "OK");
+            return new CronTaskResult(true, "OK", null, $this->_log);
         } else {
-            return new CronTaskResult(false, "FAILED", null, ['Debug cron task failure triggered by random']);
+            $this->log('Debug cron task failure triggered by random', 'critical');
+            return new CronTaskResult(false, "FAILED", null, $this->_log);
         }
     }
 }

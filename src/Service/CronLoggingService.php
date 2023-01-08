@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Cron\Cron\Listener;
+namespace Cron\Service;
 
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
@@ -14,7 +14,7 @@ use Cron\Event\CronTaskEvent;
  *
  * @package Cron\Event
  */
-class CronTaskListener implements EventListenerInterface
+class CronLoggingService implements EventListenerInterface
 {
     /**
      * @var int Default log level

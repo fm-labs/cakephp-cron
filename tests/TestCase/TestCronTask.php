@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Cron\Test\TestCase;
 
-use Cron\Cron\CronTask;
+use Cron\Cron\Task\BaseCronTask;
 
 /**
  * Class TestCronTask
  * @package Cron\Test\TestCase
  */
-class TestCronTask extends CronTask
+class TestCronTask extends BaseCronTask
 {
     /**
      * @return bool|CronTaskResult|null|mixed

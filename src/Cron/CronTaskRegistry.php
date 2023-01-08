@@ -5,6 +5,7 @@ namespace Cron\Cron;
 
 use Cake\Core\App;
 use Cake\Core\ObjectRegistry;
+use Cron\Cron\Task\BaseCronTask;
 use RuntimeException;
 
 /**
@@ -71,12 +72,12 @@ class CronTaskRegistry extends ObjectRegistry
             $instance = new $class($settings);
         }
 
-        if ($instance instanceof CronTask) {
+        if ($instance instanceof BaseCronTask) {
             return $instance;
         }
 
         throw new RuntimeException(
-            'Object must extend CronTask class.'
+            __d('cron','Object must extend BaseCronTask class.')
         );
     }
 
@@ -84,9 +85,9 @@ class CronTaskRegistry extends ObjectRegistry
      * Get loaded cron task instance
      *
      * @param string $name
-     * @return null|\Cron\Cron\CronTask
+     * @return \Cron\Cron\Task\BaseCronTask
      */
-    public function get($name)
+    public function get($name): \Cron\Cron\Task\BaseCronTask
     {
         return parent::get($name);
     }

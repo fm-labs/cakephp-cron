@@ -28,10 +28,7 @@ class Admin extends BaseAdminPlugin implements EventListenerInterface
      */
     public function routes(RouteBuilder $routes): void
     {
-        $routeClass = DashedRoute::class;
-        $routes->connect('/{controller}', ['action' => 'index'], compact('routeClass'));
-        $routes->connect('/{controller}/{action}/*', [], compact('routeClass'));
-        $routes->connect('/{controller}/{action}', [], compact('routeClass'));
+        $routes->fallbacks(DashedRoute::class);
     }
 
     /**
@@ -63,7 +60,7 @@ class Admin extends BaseAdminPlugin implements EventListenerInterface
     {
         $menu->addItem([
             'title' => 'Cron Jobs',
-            'url' => ['plugin' => 'Cron', 'controller' => 'CronJobs', 'action' => 'index'],
+            'url' => ['plugin' => 'Cron', 'controller' => 'CronManager', 'action' => 'index'],
             'data-icon' => 'clock-o',
         ]);
     }
