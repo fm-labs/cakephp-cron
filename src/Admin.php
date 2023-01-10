@@ -12,7 +12,7 @@ use Cake\Routing\RouteBuilder;
 /**
  * Class Plugin
  *
- * @package Content
+ * @package Cron
  */
 class Admin extends BaseAdminPlugin implements EventListenerInterface
 {
