@@ -78,6 +78,6 @@ class Plugin extends BasePlugin
     public function routes(RouteBuilder $routes): void
     {
         $routes->connect('/cron', ['controller' => 'Cron']);
-        $routes->connect('/cron/:action', ['controller' => 'Cron']);
+        $routes->connect('/cron/{action}', ['controller' => 'Cron']);
     }
 }
