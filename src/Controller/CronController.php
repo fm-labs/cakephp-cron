@@ -6,7 +6,7 @@ namespace Cron\Controller;
 use Cake\Controller\Controller;
 use Cake\Controller\Exception\MissingActionException;
 use Cake\Core\Configure;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\Log\Log;
 use Closure;
 use Cron\Cron\CronManager;
@@ -41,7 +41,7 @@ class CronController extends Controller
     /**
      * {@inheritDoc}
      */
-    public function beforeFilter(Event $event)
+    public function beforeFilter(EventInterface $event)
     {
         $this->_loadCronJobs();
     }

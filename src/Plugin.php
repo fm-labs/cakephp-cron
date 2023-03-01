@@ -50,18 +50,18 @@ class Plugin extends BasePlugin
                 'interval' => 'hourly' // month|week|day|hour|minute
             ]);
         }
-        if (!Cron::getConfig('cron_debug2')) {
-            Cron::setConfig('cron_debug2', [
-                'className' => "\\Cron\\Cron\\Task\\DebugCronTask",
-                'interval' => '*/5 * * * *' // Every 5 minutes in cron-tab notation
-            ]);
-        }
-        if (!Cron::getConfig('cron_cleanup_cronjob_results')) {
-            Cron::setConfig('cron_cleanup_cronjob_results', [
-                'className' => "\\Cron\\Cron\\Task\\CleanupResultsCronTask",
-                'interval' => 3600 // in seconds
-            ]);
-        }
+//        if (!Cron::getConfig('cron_debug2')) {
+//            Cron::setConfig('cron_debug2', [
+//                'className' => "\\Cron\\Cron\\Task\\DebugCronTask",
+//                'interval' => '*/5 * * * *' // Every 5 minutes in cron-tab notation
+//            ]);
+//        }
+//        if (!Cron::getConfig('cron_cleanup_cronjob_results')) {
+//            Cron::setConfig('cron_cleanup_cronjob_results', [
+//                'className' => "\\Cron\\Cron\\Task\\CleanupResultsCronTask",
+//                'interval' => 3600 // in seconds
+//            ]);
+//        }
 
         /**
          * Admin plugin

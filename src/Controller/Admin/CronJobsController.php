@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Cron\Controller\Admin;
 
-use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cron\Cron\CronManager;

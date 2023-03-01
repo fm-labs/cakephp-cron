@@ -3,14 +3,11 @@ declare(strict_types=1);
 
 namespace Cron\Controller\Admin;
 
-use Cake\Event\Event;
 use Cake\Event\EventInterface;
-use Cake\Http\Exception\NotFoundException;
 use Cron\Cron;
-use Cron\Cron\CronManager;
 
 /**
- * Class CronJobsController
+ * Class CronManagerController
  *
  * @package Cron\Controller\Admin
  */
@@ -37,6 +34,9 @@ class CronManagerController extends CronController
         $this->set(compact('cronConfigs'));
     }
 
+    /**
+     * @return void|\Cake\Http\Response
+     */
     public function view($configName) {
 
         $config = Cron::getConfig($configName);
@@ -49,6 +49,9 @@ class CronManagerController extends CronController
         $this->render('run');
     }
 
+    /**
+     * @return void|\Cake\Http\Response
+     */
     public function run($configName) {
 
         $config = Cron::getConfig($configName);

@@ -9,52 +9,50 @@ use Cake\Utility\Hash;
  * Class CronTaskResult
  *
  * Example:
- * new CronTaskResult( 0, 'Custom message', 123456789)
- * new CronTaskResult( [0, 'Custom message', 123456789])
- * new CronTaskResult( true)
- * new CronTaskResult( [true])
- * new CronTaskResult( [false, 'Custom error message'])
+ * new CronTaskResult( 1, 'Custom success message' )
+ * new CronTaskResult( [0, 'Custom failure message'] )
+ * new CronTaskResult( true )
+ * new CronTaskResult( [true] )
+ * new CronTaskResult( [false, 'Custom failure message'] )
  *
  * @package Cron\Cron
  */
 class CronTaskResult
 {
-    protected const STATUS_NOT_EXECUTED = -1;
-    protected const STATUS_FAIL = 0;
-    protected const STATUS_OK = 1;
+    public const STATUS_NOT_EXECUTED = -1;
+    public const STATUS_FAIL = 0;
+    public const STATUS_OK = 1;
 
-    protected $_status = self::STATUS_NOT_EXECUTED;
+    protected int $_status = self::STATUS_NOT_EXECUTED;
 
-    protected $_message = "";
+    protected string $_message = "";
 
-    protected $_timestamp;
+    protected int $_timestamp;
 
     /**
      * @var array List of log messages
      */
-    protected $_log = [];
+    protected array $_log = [];
 
     /**
      * @var array Meta data
      */
-    protected $_meta = [];
+    protected array $_meta = [];
 
     /**
      * Constructor
      *
      * @param bool|int $status Boolean TRUE maps to STATUS_OK, FALSE to STATUS_FAIL
      * @param string $message Custom result message string
-     * @param array $meta Optional Meta data
-     * @param array $log Optional Log lines
+     * @param array|null $meta Optional Meta data
+     * @param array|null $log Optional Log lines
      */
-    public function __construct($status, $message = "", array $meta = [], array $log = [])
+    public function __construct($status, string $message = "", ?array $meta = [], ?array $log = [])
     {
-        if (is_array($status)) {
-            [$status, $message] = $status;
-        }
         $this->_status = (int)$status;
-        $this->_message = (string)$message;
-        $this->_log = $log;
+        $this->_message = $message;
+        $this->_meta = (array)$meta;
+        $this->_log = (array)$log;
         $this->_timestamp = time();
     }
 
@@ -86,7 +84,7 @@ class CronTaskResult
      * @param array $log
      * @return $this
      */
-    public function setLog(array $log)
+    public function setLog(array $log): CronTaskResult
     {
         $this->_log = $log;
         return $this;
@@ -104,7 +102,7 @@ class CronTaskResult
      * @param array $meta
      * @return $this
      */
-    public function setMetaData(array $meta)
+    public function setMetaData(array $meta): CronTaskResult
     {
         $this->_meta = Hash::merge($this->_meta, $meta);
         return $this;
@@ -132,7 +130,7 @@ class CronTaskResult
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'status' => $this->_status,
