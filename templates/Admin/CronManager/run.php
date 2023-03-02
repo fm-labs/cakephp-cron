@@ -8,10 +8,10 @@ $result = $this->get('result');
 
 $this->assign('title', $configName);
 
-$this->Breadcrumbs->add(__('Cron Jobs'), ['action' => 'index']);
+$this->Breadcrumbs->add(__d('cron', 'Cron Jobs'), ['action' => 'index']);
 $this->Breadcrumbs->add($configName);
 
-$this->Toolbar->addLink(__('Run now'), ['action' => 'run', $configName], ['data-icon' => 'play'])
+$this->Toolbar->addLink(__d('cron', 'Run now'), ['action' => 'run', $configName], ['data-icon' => 'play'])
 ?>
 <div class="view">
     <?= h((string)$result) ?>

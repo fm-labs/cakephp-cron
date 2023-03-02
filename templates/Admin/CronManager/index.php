@@ -1,8 +1,8 @@
 <?php
 $this->assign('title', 'Cron Jobs');
 
-$this->Breadcrumbs->add(__('Cron'), ['action' => 'index']);
-$this->Breadcrumbs->add(__('Cron Jobs'));
+$this->Breadcrumbs->add(__d('cron', 'Cron'), ['action' => 'index']);
+$this->Breadcrumbs->add(__d('cron', 'Cron Jobs'));
 
 $cronConfigs = $this->get('cronConfigs', []);
 ?>

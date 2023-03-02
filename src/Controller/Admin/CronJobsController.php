@@ -90,7 +90,7 @@ class CronJobsController extends CronController
 //        $this->set('related', ['CronJobresults' => [
 //            'fieldsBlacklist' => ['cron_job_id', 'log', 'client_ip', 'timestamp'],
 //            'rowActions' => [
-//                'view' => [__('View'), ['controller' => 'CronJobresults', 'action' => 'view', ':id']]
+//                'view' => [__d('cron', 'View'), ['controller' => 'CronJobresults', 'action' => 'view', ':id']]
 //            ]
 //        ]]);
 //        */
