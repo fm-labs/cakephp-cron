@@ -3,57 +3,45 @@ declare(strict_types=1);
 
 namespace Cron\Cron;
 
-use Cake\Utility\Hash;
-
 /**
  * Class CronTaskResult
- *
- * Example:
- * new CronTaskResult( 1, 'Custom success message' )
- * new CronTaskResult( [0, 'Custom failure message'] )
- * new CronTaskResult( true )
- * new CronTaskResult( [true] )
- * new CronTaskResult( [false, 'Custom failure message'] )
  *
  * @package Cron\Cron
  */
 class CronTaskResult
 {
-    public const STATUS_NOT_EXECUTED = -1;
     public const STATUS_FAIL = 0;
     public const STATUS_OK = 1;
 
-    protected int $_status = self::STATUS_NOT_EXECUTED;
+    protected int $_status = -1;
 
-    protected string $_message = "";
+    protected string $_message;
 
     protected int $_timestamp;
 
     /**
-     * @var array List of log messages
-     */
-    protected array $_log = [];
-
-    /**
-     * @var array Meta data
-     */
-    protected array $_meta = [];
-
-    /**
      * Constructor
      *
-     * @param bool|int $status Boolean TRUE maps to STATUS_OK, FALSE to STATUS_FAIL
-     * @param string $message Custom result message string
-     * @param array|null $meta Optional Meta data
-     * @param array|null $log Optional Log lines
+     * @param bool $success
+     * @param string|null $message Custom result message string
      */
-    public function __construct($status, string $message = "", ?array $meta = [], ?array $log = [])
+    public function __construct(bool $success, ?string $message)
     {
-        $this->_status = (int)$status;
+        $this->_status = (int)$success;
         $this->_message = $message;
-        $this->_meta = (array)$meta;
-        $this->_log = (array)$log;
         $this->_timestamp = time();
+    }
+
+    public function setFailed(?string $message = null)
+    {
+        $this->_status = self::STATUS_FAIL;
+        $this->_message = $message;
+    }
+
+    public function setSuccess(?string $message = null)
+    {
+        $this->_status = self::STATUS_OK;
+        $this->_message = $message;
     }
 
     /**
@@ -78,45 +66,6 @@ class CronTaskResult
     public function getTimestamp(): int
     {
         return $this->_timestamp;
-    }
-
-    /**
-     * @param array $log
-     * @return $this
-     */
-    public function setLog(array $log): CronTaskResult
-    {
-        $this->_log = $log;
-        return $this;
-    }
-
-    /**
-     * @return array|mixed
-     */
-    public function getLog(): array
-    {
-        return $this->_log;
-    }
-
-    /**
-     * @param array $meta
-     * @return $this
-     */
-    public function setMetaData(array $meta): CronTaskResult
-    {
-        $this->_meta = Hash::merge($this->_meta, $meta);
-        return $this;
-    }
-
-    /**
-     * @return array|mixed
-     */
-    public function getMetaData($key = null): array
-    {
-        if ($key === null) {
-            return $this->_meta;
-        }
-        return Hash::get($this->_meta, $key);
     }
 
     /**

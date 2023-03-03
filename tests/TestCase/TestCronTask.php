@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Cron\Test\TestCase;
 
-use Cron\Cron\Task\BaseCronTask;
+use Cron\Cron\BaseCronTask;
 
 /**
  * Class TestCronTask

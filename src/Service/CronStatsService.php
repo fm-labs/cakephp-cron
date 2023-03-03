@@ -11,7 +11,8 @@ use Cron\Event\CronTaskEvent;
 /**
  * Class CronStatsListener
  *
- * @package Cron\Event
+ * @package Cron\Service
+ * @deprecated
  */
 class CronStatsService implements EventListenerInterface
 {

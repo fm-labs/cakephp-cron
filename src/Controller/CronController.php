@@ -18,12 +18,10 @@ use Cron\Cron\CronManager;
  */
 class CronController extends Controller
 {
-    public $modelClass = "Cron.CronJobs";
-
     /**
      * @var \Cron\Cron\CronManager
      */
-    public $cronManager;
+    public CronManager $cronManager;
 
     /**
      * Initialize cron tasks and attach event listeners
@@ -32,10 +30,12 @@ class CronController extends Controller
      */
     public function initialize(): void
     {
-        // use CronView
-        $this->viewBuilder()->setClassName('Cron.Cron');
+        $this->cronManager = new CronManager(
+            $this->getEventManager(),
+            Configure::read('Cron.Manager', [])
+        );
 
-        $this->cronManager = new CronManager($this->getEventManager(), Configure::read('Cron.CronManager'));
+        $this->viewBuilder()->setClassName('Cron.Cron');
     }
 
     /**
@@ -43,16 +43,16 @@ class CronController extends Controller
      */
     public function beforeFilter(EventInterface $event)
     {
-        $this->_loadCronJobs();
+        //$this->_loadCronJobs();
     }
 
     /**
      * @return void
      */
-    public function index()
+    public function all()
     {
-        $config = $this->cronManager->getConfig();
         $force = (bool)$this->request->getQuery('force');
+        $config = $this->cronManager->getConfig();
         $results = $this->cronManager->executeAll($force);
 
         $this->set(compact('config', 'results'));

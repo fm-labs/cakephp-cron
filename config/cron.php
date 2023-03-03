@@ -1,12 +1,13 @@
 <?php
 return [
     'Cron' => [
-        'Executor' => [
+        'enabled' => true,
 
+        'Manager' => [
+            'notify_email' => '',
+            'notify_on_error' => true,
         ],
 
-        'Tasks' => [
-
-        ]
+        'Tasks' => []
     ],
 ];

@@ -1,10 +1,11 @@
 <?php
-$this->assign('title', 'Cron Jobs');
+$this->assign('title', __d('cron', 'Cron Tasks'));
 
 $this->Breadcrumbs->add(__d('cron', 'Cron'), ['action' => 'index']);
 $this->Breadcrumbs->add(__d('cron', 'Cron Jobs'));
 
-$cronConfigs = $this->get('cronConfigs', []);
+$cronTasks = $this->get('cronTasks', []);
+debug($cronTasks);
 ?>
 <div class="index">
     <table class="table table-sm">
@@ -17,17 +18,17 @@ $cronConfigs = $this->get('cronConfigs', []);
             <th class="actions"><?= __d('admin', 'Actions'); ?></th>
         </tr>
         <tbody>
-        <?php foreach ($cronConfigs as $alias => $cronConfig) : ?>
-            <?php $cronConfig['enabled'] = $cronConfig['enabled'] ?? false ?>
+        <?php foreach ($cronTasks as $alias => $cronTask) : ?>
+            <?php $cronTask['enabled'] = $cronTask['enabled'] ?? false ?>
             <tr>
                 <td><?=$this->Html->link(
                         $alias,
                         ['action' => 'view', $alias],
                         []); ?>
                 </td>
-                <td><?= $cronConfig['className'] ?? "-" ?></td>
-                <td><?= $cronConfig['interval'] ?? "-" ?></td>
-                <td><?= $cronConfig['enabled'] ? "Yes" : "No" ?></td>
+                <td><?= $cronTask['className'] ?? "-" ?></td>
+                <td><?= $cronTask['interval'] ?? "-" ?></td>
+                <td><?= $cronTask['enabled'] ? "Yes" : "No" ?></td>
                 <td>?</td>
                 <td class="actions">
                     <?= $this->Html->link(

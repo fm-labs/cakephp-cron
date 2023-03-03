@@ -8,8 +8,10 @@ use Cake\Core\BasePlugin;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
+use Cake\Log\Engine\FileLog;
 use Cake\Log\Log;
 use Cake\Routing\RouteBuilder;
+use Cron\Cron\DebugCronTask;
 
 /**
  * Class CronPlugin
@@ -35,7 +37,7 @@ class Plugin extends BasePlugin
         // setup cron log
         if (!Log::getConfig('cron')) {
             Log::setConfig('cron', [
-                'className' => 'Cake\Log\Engine\FileLog',
+                'className' => FileLog::class,
                 'path' => LOGS,
                 'file' => 'cron',
                 //'levels' => ['notice', 'info', 'debug'],
@@ -46,7 +48,7 @@ class Plugin extends BasePlugin
         // register cron tasks for the cron plugin :)
         if (!Cron::getConfig('cron_debug')) {
             Cron::setConfig('cron_debug', [
-                'className' => "\\Cron\\Cron\\Task\\DebugCronTask",
+                'className' => DebugCronTask::class,
                 'interval' => 'hourly' // month|week|day|hour|minute
             ]);
         }
@@ -67,7 +69,7 @@ class Plugin extends BasePlugin
          * Admin plugin
          */
         if (\Cake\Core\Plugin::isLoaded('Admin')) {
-            \Admin\Admin::addPlugin(new \Cron\Admin());
+            \Admin\Admin::addPlugin(new CronAdmin());
         }
 
         //$eventManager = EventManager::instance();

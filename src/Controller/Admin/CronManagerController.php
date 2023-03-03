@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Cron\Controller\Admin;
 
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cron\Cron;
+use Cron\Cron\CronManager;
 
 /**
  * Class CronManagerController
@@ -13,13 +15,21 @@ use Cron\Cron;
  */
 class CronManagerController extends CronController
 {
+    public array $actions = [];
 
     /**
-     * {@inheritDoc}
+     * @var \Cake\Datasource\RepositoryInterface|CronManager|null
      */
+    private $cronManager;
+
     public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
+
+        $this->cronManager = new CronManager(
+            $this->getEventManager(),
+            Configure::read('Cron.Manager', [])
+        );
     }
 
     /**
@@ -27,51 +37,47 @@ class CronManagerController extends CronController
      */
     public function index()
     {
-        $cronConfigs = [];
-        foreach (Cron::configured() as $configName) {
-            $cronConfigs[$configName] = Cron::getConfig($configName);
+        $cronTasks = [];
+        foreach (Cron::configured() as $taskName) {
+            $cronTasks[$taskName] = Cron::getConfig($taskName);
         }
-        $this->set(compact('cronConfigs'));
+        $this->set(compact('cronTasks'));
+        $this->render('index');
     }
 
     /**
      * @return void|\Cake\Http\Response
      */
-    public function view($configName) {
+    public function view(string $taskName) {
 
-        $config = Cron::getConfig($configName);
+        $config = Cron::getConfig($taskName);
         if (!$config) {
-            $this->Flash->error("Cron config not found: " . $configName);
+            $this->Flash->error("Cron config not found: " . $taskName);
             return $this->redirect(['action' => 'index']);
         }
 
-        $this->set(compact('configName', 'config'));
+        $this->set(compact('taskName', 'config'));
         $this->render('run');
     }
 
     /**
      * @return void|\Cake\Http\Response
      */
-    public function run($configName) {
+    public function run(string $taskName) {
 
-        $config = Cron::getConfig($configName);
+        $config = Cron::getConfig($taskName);
         if (!$config) {
-            $this->Flash->error("Cron config not found: " . $configName);
+            $this->Flash->error("Cron config not found: " . $taskName);
             return $this->redirect(['action' => 'index']);
         }
 
-        $result = Cron::run($configName);
-        if (!$result) {
-            $this->Flash->error("Cron execution failed: " . $configName);
-            return $this->redirect(['action' => 'index']);
-        }
-
+        $result = $this->cronManager->executeTask($taskName);
         if ($result->isSuccess()) {
             $this->Flash->success($result->getMessage());
         } else {
             $this->Flash->error($result->getMessage());
         }
 
-        $this->set(compact('configName', 'config', 'result'));
+        $this->set(compact('taskName', 'config', 'result'));
     }
 }

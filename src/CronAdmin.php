@@ -14,7 +14,7 @@ use Cake\Routing\RouteBuilder;
  *
  * @package Cron
  */
-class Admin extends BaseAdminPlugin implements EventListenerInterface
+class CronAdmin extends BaseAdminPlugin implements EventListenerInterface
 {
     /**
      * @inheritDoc
@@ -59,7 +59,7 @@ class Admin extends BaseAdminPlugin implements EventListenerInterface
     public function buildAdminSystemMenu(Event $event, \Cupcake\Menu\MenuItemCollection $menu): void
     {
         $menu->addItem([
-            'title' => 'Cron Jobs',
+            'title' => __d('cron', 'Scheduled Tasks'),
             'url' => ['plugin' => 'Cron', 'controller' => 'CronManager', 'action' => 'index'],
             'data-icon' => 'clock-o',
         ]);

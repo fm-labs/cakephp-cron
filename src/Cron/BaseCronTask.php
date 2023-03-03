@@ -1,10 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Cron\Cron\Task;
+namespace Cron\Cron;
 
 use Cake\Log\Log;
-use Cron\Cron\ICronTask;
 
 /**
  * Class Task
@@ -13,10 +12,10 @@ use Cron\Cron\ICronTask;
  */
 abstract class BaseCronTask implements ICronTask
 {
-    protected $_log = [];
+    protected array $_log = [];
 
     /**
-     * @return array|\Cron\Cron\CronTaskResult
+     * @return void|CronTaskResult
      */
     abstract function execute();
 
@@ -26,7 +25,7 @@ abstract class BaseCronTask implements ICronTask
      * @param $message
      * @param string $level
      */
-    public function log($message, $level = 'info')
+    public function log($message, string $level = 'info')
     {
         $className = static::class;
         $taskName = substr($className, strrpos($className, '\\') + 1);

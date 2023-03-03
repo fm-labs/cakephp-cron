@@ -5,7 +5,6 @@ namespace Cron\Cron;
 
 use Cake\Core\App;
 use Cake\Core\ObjectRegistry;
-use Cron\Cron\Task\BaseCronTask;
 use RuntimeException;
 
 /**
@@ -23,13 +22,9 @@ class CronTaskRegistry extends ObjectRegistry
      * @param string $class Partial classname to resolve.
      * @return string|false Either the correct classname or false.
      */
-    protected function _resolveClassName($class): ?string
+    protected function _resolveClassName(string $class): ?string
     {
-        if (is_object($class)) {
-            return $class;
-        }
-
-        return App::className($class, 'Cron/Task', 'CronTask');
+        return App::className($class, 'Cron', 'CronTask');
     }
 
     /**
@@ -38,9 +33,8 @@ class CronTaskRegistry extends ObjectRegistry
      * Part of the template method for Cake\Core\ObjectRegistry::load()
      *
      * @param string $class The classname that is missing.
-     * @param string $plugin The plugin the cron task is missing in.
+     * @param string|null $plugin The plugin the cron task is missing in.
      * @return void
-     * @throws \RuntimeException
      */
     protected function _throwMissingClassError(string $class, ?string $plugin): void
     {
@@ -54,11 +48,11 @@ class CronTaskRegistry extends ObjectRegistry
      *
      * @param string|\Psr\Log\LoggerInterface $class The classname or object to make.
      * @param string $alias The alias of the object.
-     * @param array $settings An array of settings to use for the cron task.
+     * @param array $config An array of config to use for the cron task.
      * @return \Psr\Log\LoggerInterface The constructed cron task class.
      * @throws \RuntimeException when an object doesn't implement the correct interface.
      */
-    protected function _create($class, $alias, $settings)
+    protected function _create($class, string $alias, array $config)
     {
         if (is_callable($class)) {
             $class = $class($alias);
@@ -69,15 +63,15 @@ class CronTaskRegistry extends ObjectRegistry
         }
 
         if (!isset($instance)) {
-            $instance = new $class($settings);
+            $instance = new $class($config);
         }
 
-        if ($instance instanceof BaseCronTask) {
+        if ($instance instanceof ICronTask) {
             return $instance;
         }
 
         throw new RuntimeException(
-            __d('cron','Object must extend BaseCronTask class.')
+            __d('cron','Object must be an instance of ICronTask class.')
         );
     }
 
@@ -85,9 +79,9 @@ class CronTaskRegistry extends ObjectRegistry
      * Get loaded cron task instance
      *
      * @param string $name
-     * @return \Cron\Cron\Task\BaseCronTask
+     * @return \Cron\Cron\ICronTask
      */
-    public function get($name): \Cron\Cron\Task\BaseCronTask
+    public function get(string $name): ICronTask
     {
         return parent::get($name);
     }
