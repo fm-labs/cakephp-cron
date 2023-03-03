@@ -18,7 +18,7 @@ use Cron\Cron\DebugCronTask;
  *
  * @package Cron
  */
-class Plugin extends BasePlugin
+class CronPlugin extends BasePlugin
 {
     public function bootstrap(PluginApplicationInterface $app): void
     {
