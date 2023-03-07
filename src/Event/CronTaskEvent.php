@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Cron\Event;
 
 use Cake\Event\Event;
+use Cron\Cron\CronManager;
+use Cron\Cron\CronTaskResult;
 
 /**
  * Class CronTaskEvent
@@ -13,9 +15,9 @@ use Cake\Event\Event;
 class CronTaskEvent extends Event
 {
     /**
-     * return CronManager
+     * @return \Cron\Cron\CronManager
      */
-    public function getCronManager()
+    public function getSubject(): CronManager
     {
         return $this->_subject;
     }
@@ -23,16 +25,16 @@ class CronTaskEvent extends Event
     /**
      * @return string
      */
-    public function getTaskName()
+    public function getTaskName(): string
     {
-        return $this->data['name'];
+        return $this->getData('name');
     }
 
     /**
      * @return \Cron\Cron\CronTaskResult
      */
-    public function getResult()
+    public function getResult(): ?CronTaskResult
     {
-        return $this->data['result'];
+        return $this->getData('result');
     }
 }

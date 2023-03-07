@@ -49,7 +49,7 @@ class CronPlugin extends BasePlugin
         if (!Cron::getConfig('cron_debug')) {
             Cron::setConfig('cron_debug', [
                 'className' => DebugCronTask::class,
-                'interval' => 'hourly' // month|week|day|hour|minute
+                'interval' => 3600
             ]);
         }
 //        if (!Cron::getConfig('cron_debug2')) {
@@ -79,7 +79,10 @@ class CronPlugin extends BasePlugin
 
     public function routes(RouteBuilder $routes): void
     {
-        $routes->connect('/cron', ['controller' => 'Cron']);
-        $routes->connect('/cron/{action}', ['controller' => 'Cron']);
+        $routes->connect('/cron',
+            ['plugin' => 'Cron', 'controller' => 'Cron', 'action' => 'index']);
+        $routes->connect('/cron/{task}',
+            ['plugin' => 'Cron', 'controller' => 'Cron', 'action' => 'run'],
+            ['pass' => ['task']]);
     }
 }

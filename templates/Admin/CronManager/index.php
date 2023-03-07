@@ -5,7 +5,6 @@ $this->Breadcrumbs->add(__d('cron', 'Cron'), ['action' => 'index']);
 $this->Breadcrumbs->add(__d('cron', 'Cron Jobs'));
 
 $cronTasks = $this->get('cronTasks', []);
-debug($cronTasks);
 ?>
 <div class="index">
     <table class="table table-sm">
@@ -32,9 +31,17 @@ debug($cronTasks);
                 <td>?</td>
                 <td class="actions">
                     <?= $this->Html->link(
-                        __d('cron', 'Run now'),
+                        __d('cron', 'Run'),
                         ['action' => 'run', $alias],
                         ['class' => 'btn btn-xs btn-outline-primary', 'data-icon' => 'play']); ?>
+                    <?= $this->Html->link(
+                        __d('cron', 'Force Run'),
+                        ['action' => 'run', $alias, '?' => ['force' => true]],
+                        ['class' => 'btn btn-xs btn-outline-primary', 'data-icon' => 'play']); ?>
+                    <?= $this->Html->link(
+                        __d('cron', 'Simulate'),
+                        ['prefix' => null, 'plugin' => 'Cron', 'controller' => 'Cron', 'action' => $alias],
+                        ['class' => 'btn btn-xs btn-outline-primary', 'data-icon' => 'play', 'target' => '_blank']); ?>
                     <?php /* echo $this->Html->link(
                         __d('cron', 'Disable'),
                         ['action' => 'disable', $alias],

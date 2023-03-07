@@ -1,4 +1,4 @@
-a<?php
+<?php
 $this->loadHelper('Sugar.Box');
 
 $taskName = $this->get('taskName');
@@ -16,7 +16,7 @@ $this->Toolbar->addLink(__d('cron', 'Run now'), ['action' => 'run', $taskName], 
 ?>
 <div class="view">
     <h3>Result</h3>
-    <?= h((string)$result) ?>
+    <pre class="p-3"><?= h((string)$result) ?></pre>
 
     <h3>Configuration</h3>
     <?= $this->Box->start("Configuration"); ?>

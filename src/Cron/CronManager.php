@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Cron\Cron;
 
+use Cake\Cache\Cache;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Event\EventDispatcherInterface;
 use Cake\Event\EventDispatcherTrait;
@@ -28,19 +29,15 @@ class CronManager implements EventDispatcherInterface
      */
     protected CronTaskRegistry $_registry;
 
-    /**
-     * @var array Tasks configs
-     */
-    protected $_tasks;
 
     /**
-     * @param \Cake\Event\EventManager $eventManger
+     * @param EventManager|null $eventManager
      * @param array $config
      */
-    public function __construct(?EventManager $eventManger = null, array $config = [])
+    public function __construct(?EventManager $eventManager = null, array $config = [])
     {
         $this->setConfig($config);
-        $this->setEventManager($eventManger);
+        $this->setEventManager($eventManager);
         //$this->getEventManager()->on(new CronLoggingService());
 
         $this->_registry = new CronTaskRegistry();
@@ -58,23 +55,13 @@ class CronManager implements EventDispatcherInterface
     public function loadTask($taskName, array $config = []): CronManager
     {
         // normalize config
-        $config += ['className' => null, 'interval' => null, 'timestamp' => null];
+        $config += ['className' => null, 'interval' => null];
 
         if (!$this->_registry->has($taskName)) {
             $this->_registry->load($taskName, $config);
         }
-
-        $this->_tasks[$taskName] = $config;
         return $this;
     }
-
-//    /**
-//     * @return array List of loaded task names
-//     */
-//    public function loadedTasks(): array
-//    {
-//        return $this->_registry->loaded();
-//    }
 
     /**
      * @param $taskName
@@ -87,9 +74,10 @@ class CronManager implements EventDispatcherInterface
 
     /**
      * Get task instance
-     * @return \Cron\Cron\ICronTask
+     * @param string $taskName
+     * @return ICronTask
      */
-    public function getTask($taskName): ICronTask
+    public function getTask(string $taskName): ICronTask
     {
         return $this->_registry->get($taskName);
     }
@@ -123,24 +111,22 @@ class CronManager implements EventDispatcherInterface
     }
 
     /**
-     * @param $taskName
-     * @param \Cron\Cron\BaseCronTask $task
+     * @param string $taskName
+     * @param ICronTask $task
      * @param bool $force
-     * @return \Cron\Cron\CronTaskResult
+     * @return CronTaskResult
      */
-    protected function _execute($taskName, BaseCronTask $task, bool $force = false): CronTaskResult
+    protected function _execute(string $taskName, ICronTask $task, bool $force = false): CronTaskResult
     {
-        $config = $this->_tasks[$taskName];
-        $result = null;
         try {
-            if (!$force) {
-                $lastExecuted = $config['timestamp'];
-                if ($lastExecuted && $lastExecuted + $config['interval'] > time()) {
-                    $status = null;
-                    $nextRun = (new \DateTime())->setTimestamp($lastExecuted + $config['interval']);
-                    //$nextRunStr = $nextRun->format("Y-m-d H:i:s");
-                    $msg = sprintf("%ds", $nextRun->getTimestamp() - time());
+            $config = Cron::getConfig($taskName);
 
+            if (!$force) {
+                $lastResult = Cache::read($taskName, 'cron');
+                $lastExecuted = $lastResult['timestamp'];
+                if ($lastExecuted && $lastExecuted + $config['interval'] > time()) {
+                    $nextRun = (new \DateTime())->setTimestamp($lastExecuted + $config['interval']);
+                    $msg = sprintf("Wait %ds", $nextRun->getTimestamp() - time());
                     return new CronTaskResult(false, $msg);
                 }
             }
@@ -157,10 +143,18 @@ class CronManager implements EventDispatcherInterface
                 $result = $event->getResult();
             } else {
                 $result = $task->execute();
-                if (!($result instanceof CronTaskResult)) {
-                    throw new \Exception('CRON_BAD_TASK_RESULT');
+
+                // if the task does not return anything, and does not throw an exception,
+                // it is assumed the task execution was successful
+                if (!$result) {
+                    $result = new CronTaskResult(true, "OK");
                 }
             }
+
+            if (!($result instanceof CronTaskResult)) {
+                throw new \LogicException("Malformed result. CronTaskResult instance expected");
+            }
+
         } catch (\Exception $ex) {
             $result = new CronTaskResult(false, $ex->getMessage());
         }
@@ -177,7 +171,7 @@ class CronManager implements EventDispatcherInterface
         }
 
         // cache last result
-        //Cache::write($taskName, $result->toArray(), 'cron');
+        Cache::write($taskName, $result->toArray(), 'cron');
 
         return $result;
     }
