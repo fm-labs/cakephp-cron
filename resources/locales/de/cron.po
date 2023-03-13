@@ -1,0 +1,77 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2023-03-13 00:07+0000\n"
+"PO-Revision-Date: 2023-03-13 02:02+0100\n"
+"Last-Translator: \n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/src/Cron/CronTaskRegistry.php:74
+msgid "Object must be an instance of ICronTask class."
+msgstr "Objekt muss eine Instanz der Klasse ICronTask sein."
+
+#: mnt/DATA/workspaces/php/cakephp-cron/src/CronAdmin.php:62
+msgid "Scheduled Tasks"
+msgstr "Geplante Aufgaben"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:2
+msgid "Cron Tasks"
+msgstr "Geplante Aufgaben"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:4
+msgid "Cron"
+msgstr ""
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:5
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/run.php:12
+msgid "Cron Jobs"
+msgstr "Geplante Aufgaben"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:12
+msgid "Task Name"
+msgstr "Name der Aufgabe"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:13
+msgid "Classname"
+msgstr "Klassenname"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:14
+msgid "Interval"
+msgstr "Interval"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:15
+msgid "Enabled"
+msgstr "Aktiviert"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:16
+msgid "Last executed"
+msgstr "Zuletzt ausgeführt"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:17
+msgid "Actions"
+msgstr "Aktionen"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:34
+msgid "Run"
+msgstr "Ausführen"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:38
+msgid "Force Run"
+msgstr "Ausführung erzwingen"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/index.php:42
+msgid "Simulate"
+msgstr "Simulieren"
+
+#: mnt/DATA/workspaces/php/cakephp-cron/templates/Admin/CronManager/run.php:15
+msgid "Run now"
+msgstr "Jetzt ausführen"
