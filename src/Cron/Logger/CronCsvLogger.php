@@ -1,20 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace Cron\Service;
+namespace Cron\Cron\Logger;
 
 use Cake\Event\EventListenerInterface;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
 use Cron\Event\CronTaskEvent;
+use const Cron\Service\DS;
+use const Cron\Service\TMP;
 
 /**
- * Class CronStatsListener
+ * Class CronCsvLogger
  *
  * @package Cron\Service
- * @deprecated
  */
-class CronStatsService implements EventListenerInterface
+class CronCsvLogger implements EventListenerInterface
 {
     /**
      * @return array List of implemented events
@@ -22,18 +23,8 @@ class CronStatsService implements EventListenerInterface
     public function implementedEvents(): array
     {
         return [
-            'Cron.beforeTask' => 'beforeTask',
             'Cron.afterTask' => 'afterTask',
         ];
-    }
-
-    /**
-     * Log beforeTask event
-     *
-     * @param \Cron\Event\CronTaskEvent $event
-     */
-    public function beforeTask(CronTaskEvent $event)
-    {
     }
 
     /**

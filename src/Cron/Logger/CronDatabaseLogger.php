@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Cron\Service;
+namespace Cron\Cron\Logger;
 
+use Cake\Core\Configure;
 use Cake\Event\EventListenerInterface;
 use Cake\Log\Log;
-use Cake\Mailer\Email;
+use Cake\Mailer\MailerAwareTrait;
 use Cake\ORM\TableRegistry;
 use Cron\Event\CronTaskEvent;
 
@@ -15,8 +16,10 @@ use Cron\Event\CronTaskEvent;
  * @package Cron\Service
  * @deprecated
  */
-class CronLoggingService implements EventListenerInterface
+class CronDatabaseLogger implements EventListenerInterface
 {
+    use MailerAwareTrait;
+
     /**
      * @var int Default log level
      */
@@ -88,22 +91,12 @@ class CronLoggingService implements EventListenerInterface
         }
 
         // send error notifications
-        $notifyOnError = $event->getCronManager()->getConfig('notify_on_error');
-        $notifyEmail = $event->getCronManager()->getConfig('notify_email');
-        if ($notifyOnError && $notifyEmail) {
+        if (Configure::read('Cron.notifyOnError')) {
             // send report mail
             if ($result->getStatus() == false) {
                 try {
-                    $email = new Email('admin');
-                    $email->setSubject('Cronjob result notification for ' . $event->getTaskName());
-                    $email->setViewVars([
-                        'status' => $result->getStatus(),
-                        'timestamp' => $result->getTimestamp(),
-                        'message' => $result->getMessage(),
-                        'log' => $result->getLog(),
-                    ]);
-                    $email->viewBuilder()->setTemplate('Cron.cron_result_notify', false);
-                    $email->send();
+                    $mailer = $this->getMailer("Cron.Cron");
+                    $mailer->send('cronTaskResult', [$event->getTaskName(), $result]);
                 } catch (\Exception $e) {
                     Log::error(sprintf(
                         "[cron:task:%s] CronTaskListener: FAILED TO SEND RESULT NOTIFY: %s",

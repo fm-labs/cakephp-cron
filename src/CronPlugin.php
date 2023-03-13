@@ -5,6 +5,7 @@ namespace Cron;
 
 use Cake\Cache\Cache;
 use Cake\Core\BasePlugin;
+use Cake\Core\Configure;
 use Cake\Core\PluginApplicationInterface;
 use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
@@ -23,6 +24,10 @@ class CronPlugin extends BasePlugin
     public function bootstrap(PluginApplicationInterface $app): void
     {
         parent::bootstrap($app);
+
+        if (\Cake\Core\Plugin::isLoaded('Settings')) {
+            Configure::load('Cron', 'settings');
+        }
 
         // setup cron cache
         if (!Cache::getConfig('cron')) {
@@ -73,8 +78,8 @@ class CronPlugin extends BasePlugin
         }
 
         //$eventManager = EventManager::instance();
-        //$eventManager->on(new \Cron\Service\CronLoggingService());
-        //$eventManager->on(new \Cron\Service\CronStatsService());
+        //$eventManager->on(new \Cron\Cron\Logger\CronCsvLogger());
+        //$eventManager->on(new \Cron\Cron\Logger\CronDatabaseLogger());
     }
 
     public function routes(RouteBuilder $routes): void

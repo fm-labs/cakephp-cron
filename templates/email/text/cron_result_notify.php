@@ -1,3 +1,9 @@
+<?php
+$status = $this->get('status');
+$message = $this->get('message');
+$timestamp = $this->get('timestamp');
+$log = $this->get('log', []);
+?>
 ================================
 Cronjob Result Notification
 ================================
