@@ -14,7 +14,7 @@ $cronTasks = $this->get('cronTasks', []);
             <th><?= __d('cron', 'Interval'); ?></th>
             <th><?= __d('cron', 'Enabled'); ?></th>
             <th><?= __d('cron', 'Last executed'); ?></th>
-            <th class="actions"><?= __d('admin', 'Actions'); ?></th>
+            <th class="actions"><?= __d('cron', 'Actions'); ?></th>
         </tr>
         <tbody>
         <?php foreach ($cronTasks as $alias => $cronTask) : ?>
