@@ -18,11 +18,13 @@ class DebugCronTask extends BaseCronTask
         $this->log("DebugCronTask executed", 'info');
 
         $result = new CronTaskResult(false, "Unknown");
+        $result->appendLog("Starting debug cron task ...");
         if (rand(0, 100) < 50) {
             $result->setSuccess("OK");
         } else {
             $result->setFailed("Random failure");
         }
+        $result->appendLog("Finished debug cron task!");
         return $result;
     }
 }

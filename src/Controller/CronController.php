@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Cron\Controller;
 
 use Cake\Controller\Controller;
-use Cake\Controller\Exception\MissingActionException;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
-use Cake\Log\Log;
-use Closure;
+use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Exception\ServiceUnavailableException;
 use Cron\Cron\CronManager;
 
 /**
@@ -39,9 +39,27 @@ class CronController extends Controller
     }
 
     /**
+     * @inheritDoc
+     */
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        $token = $this->getRequest()->getQuery('token');
+        if ($token !== Configure::read('Cron.WebRunner.token')) {
+            throw new BadRequestException("Invalid token");
+        }
+
+        if (!Configure::read('Cron.enabled')) {
+            throw new ServiceUnavailableException("Cron service currently unavailable");
+        }
+
+    }
+
+    /**
      * @return void
      */
-    public function all()
+    public function index(): void
     {
         $force = (bool)$this->request->getQuery('force');
         $config = $this->cronManager->getConfig();
@@ -51,21 +69,21 @@ class CronController extends Controller
         $this->set('_serialize', 'results');
     }
 
-    public function run(?string $taskName) {
+    /**
+     * @param string|null $taskName
+     * @return void
+     */
+    public function run(?string $taskName): void
+    {
 
-        $action = (string)$this->request->getParam('action');
+        //$action = (string)$this->request->getParam('action');
         $force = (bool)$this->request->getQuery('force');
 
         if (!$this->cronManager->hasTask($taskName)) {
-            throw new MissingActionException([
-                'controller' => $this->name . "Controller",
-                'action' => $this->request->getParam('action'),
-                'prefix' => $this->request->getParam('prefix') ?: '',
-                'plugin' => $this->request->getParam('plugin'),
-            ]);
+            throw new NotFoundException(sprintf("Task not found: %s", $taskName));
         }
 
-        $result = $this->cronManager->executeTask($action, $force);
+        $result = $this->cronManager->executeTask($taskName, $force);
 
         $this->set('results', [$result]);
         $this->set('_serialize', 'results');

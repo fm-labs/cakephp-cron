@@ -19,29 +19,46 @@ class CronTaskResult
 
     protected int $_timestamp;
 
+    private array $_log;
+
     /**
      * Constructor
      *
      * @param bool $success
      * @param string|null $message Custom result message string
      */
-    public function __construct(bool $success, ?string $message)
+    public function __construct(bool $success, ?string $message, array $log = [])
     {
         $this->_status = (int)$success;
         $this->_message = $message;
         $this->_timestamp = time();
+        $this->_log = $log;
     }
 
-    public function setFailed(?string $message = null)
+    /**
+     * @param string|null $message
+     * @return $this
+     */
+    public function setFailed(?string $message = null): static
     {
         $this->_status = self::STATUS_FAIL;
         $this->_message = $message;
+        $this->appendLog(sprintf("Status changed: STATUS:%s MSG:%s", $this->_status, $this->_message));
+
+        return $this;
     }
 
-    public function setSuccess(?string $message = null)
+    /**
+     * @param string|null $message
+     * @return $this
+     */
+    public function setSuccess(?string $message = null): static
     {
         $this->_status = self::STATUS_OK;
         $this->_message = $message;
+        $this->appendLog(sprintf("Status changed: STATUS:%s MSG:%s", $this->_status, $this->_message));
+
+        return $this;
     }
 
     /**
@@ -77,6 +94,38 @@ class CronTaskResult
     }
 
     /**
+     * @param array $log
+     * @return CronTaskResult
+     */
+    public function setLog(array $log): static
+    {
+        $this->_log = $log;
+
+        return $this;
+    }
+
+    public function appendLog(string|array $log): static
+    {
+        if (is_string($log)) {
+            $log = [$log];
+        }
+
+        foreach ($log as $line) {
+            $this->_log[] = $line;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getLog(): array
+    {
+        return $this->_log;
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array
@@ -84,7 +133,8 @@ class CronTaskResult
         return [
             'status' => $this->_status,
             'message' => $this->_message,
-            'timestamp' => $this->_timestamp
+            'timestamp' => $this->_timestamp,
+            'log' => $this->_log,
         ];
     }
 

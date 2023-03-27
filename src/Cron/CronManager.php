@@ -20,14 +20,32 @@ class CronManager implements EventDispatcherInterface
      * @var array Default config
      */
     protected array $_defaultConfig = [
-        'notify_email' => '',
-        'notify_on_error' => true,
     ];
 
     /**
      * @var \Cron\Cron\CronTaskRegistry
      */
     protected CronTaskRegistry $_registry;
+
+
+    /**
+     * @param string $taskName
+     * @return mixed
+     */
+    static public function getLastResult(string $taskName): mixed
+    {
+        return Cache::read($taskName, 'cron');
+    }
+
+    /**
+     * @param string $taskName
+     * @param CronTaskResult $result
+     * @return void
+     */
+    static public function setLastResult(string $taskName, CronTaskResult $result): void
+    {
+        Cache::write($taskName, $result->toArray(),'cron');
+    }
 
 
     /**
@@ -38,7 +56,6 @@ class CronManager implements EventDispatcherInterface
     {
         $this->setConfig($config);
         $this->setEventManager($eventManager);
-        //$this->getEventManager()->on(new CronLoggingService());
 
         $this->_registry = new CronTaskRegistry();
 
@@ -122,8 +139,8 @@ class CronManager implements EventDispatcherInterface
             $config = Cron::getConfig($taskName);
 
             if (!$force) {
-                $lastResult = Cache::read($taskName, 'cron');
-                $lastExecuted = $lastResult['timestamp'];
+                $lastResult = self::getLastResult($taskName);
+                $lastExecuted = $lastResult['timestamp'] ?? null;
                 if ($lastExecuted && $lastExecuted + $config['interval'] > time()) {
                     $nextRun = (new \DateTime())->setTimestamp($lastExecuted + $config['interval']);
                     $msg = sprintf("Wait %ds", $nextRun->getTimestamp() - time());
@@ -171,7 +188,7 @@ class CronManager implements EventDispatcherInterface
         }
 
         // cache last result
-        Cache::write($taskName, $result->toArray(), 'cron');
+        self::setLastResult($taskName, $result);
 
         return $result;
     }

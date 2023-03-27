@@ -7,8 +7,7 @@ use Cake\Event\EventListenerInterface;
 use Cake\Filesystem\File;
 use Cake\Filesystem\Folder;
 use Cron\Event\CronTaskEvent;
-use const Cron\Service\DS;
-use const Cron\Service\TMP;
+
 
 /**
  * Class CronCsvLogger
@@ -38,7 +37,7 @@ class CronCsvLogger implements EventListenerInterface
         $timestamp = $result->getTimestamp();
         $status = $result->getStatus();
 
-        $statStr = sprintf("%s;%s;\"%s\"\n", $timestamp, $status, $result->getMessage());
+        $statStr = sprintf("%s;%s;\"%s\"\n", date(DATE_ATOM), $status, $result->getMessage());
 
         $statsDir = TMP . "cron" . DS;
         $folder = new Folder($statsDir, true, 0777);

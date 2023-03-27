@@ -40,6 +40,7 @@ class CronManagerController extends CronController
         $cronTasks = [];
         foreach (Cron::configured() as $taskName) {
             $cronTasks[$taskName] = Cron::getConfig($taskName);
+            $cronTasks[$taskName]['_last'] = CronManager::getLastResult($taskName);
         }
         $this->set(compact('cronTasks'));
         $this->render('index');
@@ -71,7 +72,8 @@ class CronManagerController extends CronController
             return $this->redirect(['action' => 'index']);
         }
 
-        $result = $this->cronManager->executeTask($taskName);
+        $force = (bool)$this->getRequest()->getQuery('force');
+        $result = $this->cronManager->executeTask($taskName, $force);
         if ($result->isSuccess()) {
             $this->Flash->success($result->getMessage());
         } else {

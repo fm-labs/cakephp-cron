@@ -13,6 +13,7 @@ $cronTasks = $this->get('cronTasks', []);
             <th><?= __d('cron', 'Classname'); ?></th>
             <th><?= __d('cron', 'Interval'); ?></th>
             <th><?= __d('cron', 'Enabled'); ?></th>
+            <th><?= __d('cron', 'Last message'); ?></th>
             <th><?= __d('cron', 'Last executed'); ?></th>
             <th class="actions"><?= __d('cron', 'Actions'); ?></th>
         </tr>
@@ -28,7 +29,18 @@ $cronTasks = $this->get('cronTasks', []);
                 <td><?= $cronTask['className'] ?? "-" ?></td>
                 <td><?= $cronTask['interval'] ?? "-" ?></td>
                 <td><?= $cronTask['enabled'] ? "Yes" : "No" ?></td>
-                <td>?</td>
+                <?php if ($cronTask['_last']): ?>
+                    <td>
+                            <?= h($cronTask['_last']['message']) ?>
+                    </td>
+                    <td>
+                        <?= $this->Time->timeAgoInWords($cronTask['_last']['timestamp']) ?>
+                    </td>
+                <?php else: ?>
+                    <td colspan="2">
+                        <?= __d('cron', 'Not executed') ?>
+                    </td>
+                <?php endif; ?>
                 <td class="actions">
                     <?= $this->Html->link(
                         __d('cron', 'Run'),
@@ -40,7 +52,7 @@ $cronTasks = $this->get('cronTasks', []);
                         ['class' => 'btn btn-xs btn-outline-primary', 'data-icon' => 'play']); ?>
                     <?= $this->Html->link(
                         __d('cron', 'Simulate'),
-                        ['prefix' => null, 'plugin' => 'Cron', 'controller' => 'Cron', 'action' => $alias],
+                        ['prefix' => false, 'plugin' => 'Cron', 'controller' => 'Cron', 'action' => 'run', $alias],
                         ['class' => 'btn btn-xs btn-outline-primary', 'data-icon' => 'play', 'target' => '_blank']); ?>
                     <?php /* echo $this->Html->link(
                         __d('cron', 'Disable'),

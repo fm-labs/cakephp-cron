@@ -1,9 +1,14 @@
 <?php
 return [
     'Cron' => [
-        'enabled' => true,
-        'notify_email' => '',
-        'notify_on_error' => true,
+        'enabled' => false,
+        'emailProfile' => 'admin',
+        'notifyOnSuccess' => false,
+        'notifyOnError' => false,
+
+        'WebRunner' => [
+            'token' => '', // 'myS3cretCr0nTok3n',
+        ],
 
         'Tasks' => []
     ],

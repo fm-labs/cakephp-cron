@@ -13,6 +13,8 @@ use Cake\Log\Engine\FileLog;
 use Cake\Log\Log;
 use Cake\Routing\RouteBuilder;
 use Cron\Cron\DebugCronTask;
+use Cron\Cron\Logger\CronCsvLogger;
+use Cron\Mailer\CronMailer;
 
 /**
  * Class CronPlugin
@@ -34,7 +36,7 @@ class CronPlugin extends BasePlugin
             Cache::setConfig('cron', [
                 'className' => 'File',
                 'duration' => '+1 years',
-                'path' => CACHE,
+                'path' => CACHE . 'cron' . DS,
                 'prefix' => 'cron_',
             ]);
         }
@@ -51,8 +53,8 @@ class CronPlugin extends BasePlugin
         }
 
         // register cron tasks for the cron plugin :)
-        if (!Cron::getConfig('cron_debug')) {
-            Cron::setConfig('cron_debug', [
+        if (!Cron::getConfig('debug')) {
+            Cron::setConfig('debug', [
                 'className' => DebugCronTask::class,
                 'interval' => 3600
             ]);
@@ -77,8 +79,9 @@ class CronPlugin extends BasePlugin
             \Admin\Admin::addPlugin(new CronAdmin());
         }
 
-        //$eventManager = EventManager::instance();
-        //$eventManager->on(new \Cron\Cron\Logger\CronCsvLogger());
+        $eventManager = EventManager::instance();
+        $eventManager->on(new CronMailer());
+        $eventManager->on(new CronCsvLogger());
         //$eventManager->on(new \Cron\Cron\Logger\CronDatabaseLogger());
     }
 
