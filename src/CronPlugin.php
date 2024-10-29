@@ -7,12 +7,10 @@ use Cake\Cache\Cache;
 use Cake\Core\BasePlugin;
 use Cake\Core\Configure;
 use Cake\Core\PluginApplicationInterface;
-use Cake\Event\EventListenerInterface;
 use Cake\Event\EventManager;
 use Cake\Log\Engine\FileLog;
 use Cake\Log\Log;
 use Cake\Routing\RouteBuilder;
-use Cron\Cron\DebugCronTask;
 use Cron\Cron\Logger\CronCsvLogger;
 use Cron\Mailer\CronMailer;
 
@@ -53,24 +51,24 @@ class CronPlugin extends BasePlugin
         }
 
         // register cron tasks for the cron plugin :)
-        if (!Cron::getConfig('debug')) {
-            Cron::setConfig('debug', [
-                'className' => DebugCronTask::class,
-                'interval' => 3600
-            ]);
-        }
-//        if (!Cron::getConfig('cron_debug2')) {
-//            Cron::setConfig('cron_debug2', [
-//                'className' => "\\Cron\\Cron\\Task\\DebugCronTask",
-//                'interval' => '*/5 * * * *' // Every 5 minutes in cron-tab notation
-//            ]);
-//        }
-//        if (!Cron::getConfig('cron_cleanup_cronjob_results')) {
-//            Cron::setConfig('cron_cleanup_cronjob_results', [
-//                'className' => "\\Cron\\Cron\\Task\\CleanupResultsCronTask",
-//                'interval' => 3600 // in seconds
-//            ]);
-//        }
+        //        if (!Cron::getConfig('debug')) {
+        //            Cron::setConfig('debug', [
+        //                'className' => DebugCronTask::class,
+        //                'interval' => 3600
+        //            ]);
+        //        }
+        //        if (!Cron::getConfig('cron_debug2')) {
+        //            Cron::setConfig('cron_debug2', [
+        //                'className' => "\\Cron\\Cron\\Task\\DebugCronTask",
+        //                'interval' => '*/5 * * * *' // Every 5 minutes in cron-tab notation
+        //            ]);
+        //        }
+        //        if (!Cron::getConfig('cron_cleanup_cronjob_results')) {
+        //            Cron::setConfig('cron_cleanup_cronjob_results', [
+        //                'className' => "\\Cron\\Cron\\Task\\CleanupResultsCronTask",
+        //                'interval' => 3600 // in seconds
+        //            ]);
+        //        }
 
         /**
          * Admin plugin
